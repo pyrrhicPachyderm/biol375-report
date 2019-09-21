@@ -1,0 +1,191 @@
+%References
+\usepackage{xpatch}
+\usepackage{hyperref}%Makes citations link to the bibliography.
+\usepackage[backend=biber,style=authoryear-comp]{biblatex}
+
+\ExecuteBibliographyOptions{sorting=ynt}%Year, name, title. Ensures that in-text citations are ordered chronologically.
+\assignrefcontextentries[]{*}%Assigns all citations to the global refcontext, the sorting above.
+%We will use a different refcontext around the bibliography to sort that by name.
+
+\ExecuteBibliographyOptions{dashed=false}%Ensures that two papers by the same author are listed in full in the bibliography.
+\ExecuteBibliographyOptions{maxbibnames=6,minbibnames=6}%In the bibliography, the first six authors are listed, then et al.
+\ExecuteBibliographyOptions{maxcitenames=2}%In-text, two authors are listed in full, three or more are first author then et al.
+\ExecuteBibliographyOptions{citetracker=true}%For use in line below.
+%\AtEveryCitekey{\ifciteseen{}{\defcounter{maxnames}{3}\clearfield{namehash}}}%Three names before andothers on first citation.
+%TODO: Check letters after year for multiple papers by same author in same year.
+
+\ExecuteBibliographyOptions{uniquename=false,uniquelist=false}%Disables disambiguation that would violate the min/max names above.
+\ExecuteBibliographyOptions{giveninits=true}%Initialises all given names.
+\ExecuteBibliographyOptions{doi=false, eprint=false, url=false, isbn=false}
+
+\DeclareNameAlias{author}{last-first}%Ensures all authors are given as "surname, given initials", rather than "given initials surname".
+
+\AtEveryBibitem{\clearfield{number}}%Removes issue numbers, but leaves volume numbers.
+\AtEveryBibitem{\clearfield{month}}%Removes month of publication.
+\AtEveryBibitem{\clearfield{note}}%Removes the `note' field.
+
+\xpatchbibmacro{name:andothers} {\bibstring{andothers}} {\bibstring[\textit]{andothers}} {}{}%Italicises et al.
+
+%Remove `In:' before the journal title for articles, but keeps it for other entries.
+\xpatchbibdriver{article}{%
+	\usebibmacro{in:}%
+}{%
+	%Just delete it; replace it with nothing.
+}{}{}
+
+\DeclareFieldFormat[article]{pages}{#1}%Removes pp. or p. from article pages ranges.
+\DeclareFieldFormat[article,inproceedings,inbook,thesis]{title}{#1}%Removes quotes around article/chapter/thesis title.
+
+%Add a comma after the journal title for articles.
+\xpatchbibmacro{journal+issuetitle}{%
+	\usebibmacro{journal}%
+	\setunit*{\addspace}%
+}{%
+	\usebibmacro{journal}%
+	\setunit*{\addcomma\addspace}%
+}{}{}
+
+%Swap so that publisher comes *before* location.
+\xpatchbibmacro{publisher+location+date}{%
+	\printlist{location}%
+	\iflistundef{publisher}
+		{\setunit*{\addcomma\space}}
+		{\setunit*{\addcolon\space}}%
+	\printlist{publisher}%
+}{%
+	\printlist{publisher}%
+	\iflistundef{location}
+		{}
+		{\setunit*{\addcomma\space}}%%
+	\printlist{location}%
+}{}{}
+
+%TODO: Test and if necessary correct handling of book editions numbers.
+%See https://onlinelibrary.wiley.com/doi/epdf/10.1111/ele.13171 for handling in existing paper.
+
+%Only print the book subtitle punctuation if there's a subtitle.
+\xpatchbibmacro{booktitle}{%
+	\setunit{\subtitlepunct}%
+	\printfield[titlecase]{booksubtitle}%
+}{%
+	\iffieldundef{booksubtitle}
+	{}
+	{%
+		\setunit{\subtitlepunct}%
+		\printfield[titlecase]{booksubtitle}%
+	}%
+}{}{}
+
+%Remove the extra period that gets forced in after the booktitle, allowing the bibdrivers to handle it properly.
+\xpatchbibmacro{booktitle}{%
+	\newunit
+}{%
+	%Just delete it; replace it with nothing.
+}{}{}
+%Ditto; remove the extra period.
+\xpatchbibmacro{maintitle+booktitle}{%
+	\usebibmacro{booktitle}%
+	\newunit%
+}{%
+	\usebibmacro{booktitle}%
+}{}{}
+
+%Remove period between book title and editors.
+\xpatchbibdriver{inbook}{%
+	\usebibmacro{maintitle+booktitle}%
+	\newunit\newblock
+	\usebibmacro{byeditor+others}%
+}{%
+	\usebibmacro{maintitle+booktitle}%
+	{\setunit*{\space}}
+	\usebibmacro{byeditor+others}%
+}{}{}
+%As above, for inproceedings.
+\xpatchbibdriver{inproceedings}{%
+	\usebibmacro{maintitle+booktitle}%
+	\newunit\newblock
+	\usebibmacro{event+venue+date}%
+	\newunit\newblock
+	\usebibmacro{byeditor+others}%
+}{%
+	\usebibmacro{maintitle+booktitle}%
+	%{\setunit*{\space}}
+	%\usebibmacro{event+venue+date}%Have to knock this out to get no period between booktitle and editors. TODO: Check this is okay.
+	%{\setunit*{\space}}\newblock
+	\usebibmacro{byeditor+others}%
+}{}{}
+
+%Ensure all names are ordered last-first. Editors aren't, otherwise.
+\DeclareNameAlias{sortname}{last-first}
+\DeclareNameAlias{default}{last-first}
+
+%Wrap the editor info in parentheses. Use the correct editor string.
+\renewbibmacro*{byeditor+others}{%
+	\ifboolexpr{
+		test {\ifnameundef{editor}}
+		and
+		test {\ifnameundef{editora}}
+		and
+		test {\ifnameundef{editorb}}
+		and
+		test {\ifnameundef{editorc}}
+		and
+		test {\ifnameundef{translator}}
+		and
+		test {\ifnameundef{commentator}}
+		and
+		test {\ifnameundef{annotator}}
+		and
+		test {\ifnameundef{introduction}}
+		and
+		test {\ifnameundef{foreword}}
+		and
+		test {\ifnameundef{afterword}}
+	}
+	{}%If we'd be printing no names at all, don't bother with the parentheses.
+	{
+		\printtext[parens]{%
+			\ifnameundef{editor}
+				{}
+				{\usebibmacro{editorstrg}%This is also changed, from `byeditor+othersstrg'.
+				\setunit{\addspace}%
+				\printnames[byeditor]{editor}%
+				\clearname{editor}%
+				\newunit
+			}%
+			\usebibmacro{byeditorx}%
+			\usebibmacro{bytranslator+others}%
+		}%
+	}%
+}
+
+%TODO: Check book and inbook format. Article and inproceedings should be okay.
+
+%Ensure proper citation of Dutch names:
+%https://en.wikipedia.org/wiki/Van_(Dutch)#Collation_and_capitalisation
+
+\ExecuteBibliographyOptions{useprefix=true} %Make sure it actually picks up the prefixes.
+
+\AtBeginDocument{%
+	\renewcommand*{\mkbibnameprefix}[1]{\MakeCapital{#1}}%Capitalise prefixes in citations.
+}
+\AtBeginBibliography{%
+	\renewcommand*{\mkbibnameprefix}[1]{#1}%But not in the bibliography
+}
+
+\renewbibmacro*{begentry}{\midsentence}%Begin bibliography entries midsentence, such that there is no capitalisation of van.
+
+\DeclareSortingNamekeyScheme{%Sort by family name, then by prefix. So van Gardingen sorts under G, not v.
+	\keypart{
+		\namepart{family}
+	}
+	\keypart{
+		\namepart{prefix}
+	}
+	\keypart{
+		\namepart{given}
+	}
+	\keypart{
+		\namepart{suffix}
+	}
+}

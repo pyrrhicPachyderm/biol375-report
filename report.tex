@@ -1,0 +1,84 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[all]{nowidow}
+\usepackage{siunitx}
+\usepackage{enumerate}
+
+%Localisation
+\usepackage{csquotes} %Context sensitive quotes: recommended by babel polyglossia
+\usepackage[british]{babel}
+
+%\usepackage[margin=0.9in]{geometry}
+
+\usepackage{titling}
+%\setlength{\droptitle}{-0.5in} %Adjust margin above title
+
+\usepackage{graphicx}
+\usepackage[font=small,margin=0.45in]{caption}
+\usepackage[labelformat=simple]{subcaption}
+\usepackage{placeins} %Provides \FloatBarrier
+\renewcommand\thesubfigure{(\alph{subfigure})}
+%\usepackage{tikz}
+%\usepackage{pgfplots}
+\usepackage{float} %Provides the float option [H] for a non-floating float.
+\graphicspath{{./figures/}}
+\usepackage{flafter} %Floats come after the first reference to them.
+
+\input{ecology-letters-style.tex}
+\addbibresource{report.bib}
+
+\let\dotlessi\i %Copy the definition so we can safely redefine \i
+\newcommand\naive{na\"{\dotlessi}ve}
+\newcommand\Naive{Na\"{\dotlessi}ve}
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+\newcommand\abs[1]{\left\lvert#1\right\rvert}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\D}[1]{\mathop{\d #1}}
+\renewcommand{\i}{\mathrm{i}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\Imat}{\mathrm{I}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\transpose}[1]{{#1}^{\mathrm{T}}}
+
+%Have to delete existing commands first.
+\let\Re\relax
+\let\Im\relax
+\DeclareMathOperator{\Re}{Re}
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\J}{J}
+
+%Custom commands
+\usepackage{suffix}%includes \WithSuffix
+\newcommand\spbinom[1]{%
+	\emph{#1}%
+}
+\WithSuffix\newcommand\spbinom*[1]{%
+	\StrCut{#1}{}{\genus}{\species}%
+	\emph{\StrLeft{\genus}{1}. \species}%
+}
+
+\title{A Comparison of $\alpha$- and $\beta$-Diversity in Disturbed and Stable Streams}
+\author{
+	Christopher Brown\\15413822
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Introduction}
+
+\section*{Methods}
+
+\section*{Results}
+
+\section*{Discussion}
+
+\FloatBarrier
+\printbibliography
+
+\end{document}
