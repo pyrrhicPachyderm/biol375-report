@@ -1,32 +1,35 @@
 %New Zealand Journal of Marine and Freshwater Research
 
-
 \usepackage{xpatch}
 \usepackage{hyperref}%Makes citations link to the bibliography.
 \usepackage[backend=biber,style=authoryear-comp]{biblatex}
 
-\ExecuteBibliographyOptions{sorting=ynt}%Year, name, title. Ensures that in-text citations are ordered chronologically.
-\assignrefcontextentries[]{*}%Assigns all citations to the global refcontext, the sorting above.
+\ExecuteBibliographyOptions{sorting=ynt} %Year, name, title. Ensures that in-text citations are ordered chronologically.
+\assignrefcontextentries[]{*} %Assigns all citations to the global refcontext, the sorting above.
 %We will use a different refcontext around the bibliography to sort that by name.
 
-\ExecuteBibliographyOptions{dashed=false}%Ensures that two papers by the same author are listed in full in the bibliography.
-\ExecuteBibliographyOptions{maxbibnames=6,minbibnames=6}%In the bibliography, the first six authors are listed, then et al.
-\ExecuteBibliographyOptions{maxcitenames=2}%In-text, two authors are listed in full, three or more are first author then et al.
-\ExecuteBibliographyOptions{citetracker=true}%For use in line below.
+\ExecuteBibliographyOptions{dashed=false} %Ensures that two papers by the same author are listed in full in the bibliography.
+\ExecuteBibliographyOptions{maxbibnames=6,minbibnames=3} %In the bibliography, the first maxnames authors are listed, then the list is truncated to minnames
+%TODO: maxbibnames=10,minbibnames=10 if using official style
+\ExecuteBibliographyOptions{maxcitenames=2,mincitenames=1} %In-text, two authors are listed in full, three or more are first author then et al.
+\ExecuteBibliographyOptions{citetracker=true} %For use in line below.
 %\AtEveryCitekey{\ifciteseen{}{\defcounter{maxnames}{3}\clearfield{namehash}}}%Three names before andothers on first citation.
 %TODO: Check letters after year for multiple papers by same author in same year.
 
-\ExecuteBibliographyOptions{uniquename=false,uniquelist=false}%Disables disambiguation that would violate the min/max names above.
-\ExecuteBibliographyOptions{giveninits=true}%Initialises all given names.
+%\ExecuteBibliographyOptions{uniquename=false,uniquelist=false}%Disables disambiguation that would violate the min/max names above.
+\ExecuteBibliographyOptions{giveninits=true} %Initialises all given names.
+\ExecuteBibliographyOptions{terseinits=true} %Removes periods and spaces around initials
 \ExecuteBibliographyOptions{doi=false, eprint=false, url=false, isbn=false}
 
-\DeclareNameAlias{author}{last-first}%Ensures all authors are given as "surname, given initials", rather than "given initials surname".
+\DeclareNameAlias{author}{last-first} %Ensures all authors are given as "surname, given initials", rather than "given initials surname".
+\DeclareNameAlias{sortname}{last-first} %Ditto for everything else
+\DeclareNameAlias{default}{last-first}
 
-\AtEveryBibitem{\clearfield{number}}%Removes issue numbers, but leaves volume numbers.
-\AtEveryBibitem{\clearfield{month}}%Removes month of publication.
-\AtEveryBibitem{\clearfield{note}}%Removes the `note' field.
+\AtEveryBibitem{\clearfield{number}} %Removes issue numbers, but leaves volume numbers.
+\AtEveryBibitem{\clearfield{month}} %Removes month of publication.
+\AtEveryBibitem{\clearfield{note}} %Removes the `note' field.
 
-\xpatchbibmacro{name:andothers} {\bibstring{andothers}} {\bibstring[\textit]{andothers}} {}{}%Italicises et al.
+%\xpatchbibmacro{name:andothers} {\bibstring{andothers}} {\bibstring[\textit]{andothers}} {}{}%Italicises et al.
 
 %Remove `In:' before the journal title for articles, but keeps it for other entries.
 \xpatchbibdriver{article}{%
@@ -35,8 +38,8 @@
 	%Just delete it; replace it with nothing.
 }{}{}
 
-\DeclareFieldFormat[article]{pages}{#1}%Removes pp. or p. from article pages ranges.
-\DeclareFieldFormat[article,inproceedings,inbook,thesis]{title}{#1}%Removes quotes around article/chapter/thesis title.
+\DeclareFieldFormat[article]{pages}{#1} %Removes pp. or p. from article pages ranges.
+\DeclareFieldFormat[article,inproceedings,inbook,thesis]{title}{#1} %Removes quotes around article/chapter/thesis title.
 
 %Add a comma after the journal title for articles.
 \xpatchbibmacro{journal+issuetitle}{%
@@ -117,10 +120,6 @@
 	\usebibmacro{byeditor+others}%
 }{}{}
 
-%Ensure all names are ordered last-first. Editors aren't, otherwise.
-\DeclareNameAlias{sortname}{last-first}
-\DeclareNameAlias{default}{last-first}
-
 %Wrap the editor info in parentheses. Use the correct editor string.
 \renewbibmacro*{byeditor+others}{%
 	\ifboolexpr{
@@ -144,7 +143,7 @@
 		and
 		test {\ifnameundef{afterword}}
 	}
-	{}%If we'd be printing no names at all, don't bother with the parentheses.
+	{} %If we'd be printing no names at all, don't bother with the parentheses.
 	{
 		\printtext[parens]{%
 			\ifnameundef{editor}
@@ -169,15 +168,15 @@
 \ExecuteBibliographyOptions{useprefix=true} %Make sure it actually picks up the prefixes.
 
 \AtBeginDocument{%
-	\renewcommand*{\mkbibnameprefix}[1]{\MakeCapital{#1}}%Capitalise prefixes in citations.
+	\renewcommand*{\mkbibnameprefix}[1]{\MakeCapital{#1}} %Capitalise prefixes in citations.
 }
 \AtBeginBibliography{%
-	\renewcommand*{\mkbibnameprefix}[1]{#1}%But not in the bibliography
+	\renewcommand*{\mkbibnameprefix}[1]{#1} %But not in the bibliography
 }
 
-\renewbibmacro*{begentry}{\midsentence}%Begin bibliography entries midsentence, such that there is no capitalisation of van.
+\renewbibmacro*{begentry}{\midsentence} %Begin bibliography entries midsentence, such that there is no capitalisation of van.
 
-\DeclareSortingNamekeyScheme{%Sort by family name, then by prefix. So van Gardingen sorts under G, not v.
+\DeclareSortingNamekeyScheme{ %Sort by family name, then by prefix. So van Gardingen sorts under G, not v.
 	\keypart{
 		\namepart{family}
 	}
@@ -190,4 +189,24 @@
 	\keypart{
 		\namepart{suffix}
 	}
+}
+
+%Join to authors with an ampersand, not 'and'
+%TODO: Remove for official style
+\renewcommand*{\finalnamedelim}{\addspace\&\addspace}
+
+%Remove the comma betwen the surname and the initials
+\renewcommand*{\revsdnamepunct}{}
+
+%Remove all italics from the bibliography with a nasty hack:
+%There are some options we only want to apply in the bibliograph, so here's a nasty hack.
+\let\printinnerbibliography\printbibliography %Copy the original command so we can modify it
+\renewcommand{\printbibliography}{
+	\begingroup
+	\let\itshape\upshape %Remove all italics
+	\renewcommand*{\finalnamedelim}{\addcomma\addspace} %Remove 'and' between penultimate and ultimate author
+	\begin{refcontext}[sorting=nyt]%Sorts the bibliography by name, then year, then title.
+		\printinnerbibliography
+	\end{refcontext}
+	\endgroup
 }
