@@ -9,8 +9,7 @@
 %We will use a different refcontext around the bibliography to sort that by name.
 
 \ExecuteBibliographyOptions{dashed=false} %Ensures that two papers by the same author are listed in full in the bibliography.
-\ExecuteBibliographyOptions{maxbibnames=6,minbibnames=3} %In the bibliography, the first maxnames authors are listed, then the list is truncated to minnames
-%TODO: maxbibnames=10,minbibnames=10 if using official style
+\ExecuteBibliographyOptions{maxbibnames=10,minbibnames=10} %In the bibliography, the first maxnames authors are listed, then the list is truncated to minnames
 \ExecuteBibliographyOptions{maxcitenames=2,mincitenames=1} %In-text, two authors are listed in full, three or more are first author then et al.
 \ExecuteBibliographyOptions{citetracker=true} %For use in line below.
 %\AtEveryCitekey{\ifciteseen{}{\defcounter{maxnames}{3}\clearfield{namehash}}}%Three names before andothers on first citation.
@@ -192,8 +191,7 @@
 }
 
 %Join to authors with an ampersand, not 'and'
-%TODO: Remove for official style
-\renewcommand*{\finalnamedelim}{\addspace\&\addspace}
+%\renewcommand*{\finalnamedelim}{\addspace\&\addspace}
 
 %Remove the comma betwen the surname and the initials
 \renewcommand*{\revsdnamepunct}{}
