@@ -5,7 +5,7 @@ RM := rm -f
 
 all: $(maindoc).pdf
 
-$(maindoc).pdf: $(maindoc).tex $(maindoc).bib ecology-letters-style.tex
+$(maindoc).pdf: $(maindoc).tex $(maindoc).bib reference-style.tex
 	latexmk $(LATEXMK_FLAGS) --jobname="$(basename $@)" $<
 pvc: $(maindoc).pdf
 	latexmk $(LATEXMK_FLAGS) --jobname="$(basename $<)" $< --pvc

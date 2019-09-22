@@ -6,11 +6,13 @@
 \usepackage{siunitx}
 \usepackage{enumerate}
 
+%Report-specific stuff
+\usepackage{setspace}\doublespacing
+%\usepackage[margin=2.5cm]{geometry}
+
 %Localisation
 \usepackage{csquotes} %Context sensitive quotes: recommended by babel polyglossia
 \usepackage[british]{babel}
-
-%\usepackage[margin=0.9in]{geometry}
 
 \usepackage{titling}
 %\setlength{\droptitle}{-0.5in} %Adjust margin above title
@@ -26,7 +28,7 @@
 \graphicspath{{./figures/}}
 \usepackage{flafter} %Floats come after the first reference to them.
 
-\input{ecology-letters-style.tex}
+\input{reference-style.tex}
 \addbibresource{report.bib}
 
 \let\dotlessi\i %Copy the definition so we can safely redefine \i
@@ -61,7 +63,7 @@
 	\emph{\StrLeft{\genus}{1}. \species}%
 }
 
-\title{A Comparison of $\alpha$- and $\beta$-Diversity in Disturbed and Stable Streams}
+\title{A Comparison of Macroinvertebrate $\alpha$- and $\beta$-Diversity in Disturbed and Stable Streams}
 \author{
 	Christopher Brown\\15413822
 }
@@ -70,6 +72,23 @@
 \begin{document}
 \maketitle
 
+\begin{center}
+	\emph{Word Count}: %TODO
+\end{center}
+
+\section*{Abstract}
+
+Blah.
+
+\bigskip\noindent\emph{Keywords}:
+beta diversity,
+biodiversity,
+freshwater macroinvertebrates,
+New Zealand,
+disturbance
+
+\clearpage
+
 \section*{Introduction}
 
 \section*{Methods}
@@ -77,6 +96,12 @@
 \section*{Results}
 
 \section*{Discussion}
+
+\section*{Acknowledgements}
+
+\clearpage
+
+%TODO: Floats
 
 \FloatBarrier
 \printbibliography
