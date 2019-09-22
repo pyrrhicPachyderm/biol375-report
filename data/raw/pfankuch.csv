@@ -1,0 +1,16 @@
+aspect,level,Cass Spring,Grasmere Stream,Waimak Spring,One Tree Swamp,Bealey Spring,Cass River,Waimakariri River,Hawdon River,Broad Stream,Bruce Stream
+Landform Slope,Upper Banks,6,2,2,2,4,2,8,2,8,8
+Mass-wasting,Upper Banks,9,3,6,3,3,3,6,6,12,12
+Debris jam potential,Upper Banks,4,4,2,2,2,4,2,6,6,8
+Vegetative bank protection,Upper Banks,3,3,3,3,6,3,3,9,9,12
+Channel capacity,Lower Banks,1,3,1,1,1,4,4,4,4,4
+Bank rock content,Lower Banks,6,8,6,8,2,2,2,2,2,2
+Obstructions,Lower Banks,2,4,2,2,2,6,4,4,4,4
+Undercutting,Lower Banks,4,8,4,4,8,8,4,16,8,16
+Deposition,Stream Bed,8,4,4,4,4,12,12,12,12,12
+Rock angularity,Stream Bed,1,1,2,2,1,2,3,3,3,3
+Brightness,Stream Bed,1,1,1,1,1,3,1,3,4,4
+Consolidation or particle packing,Stream Bed,6,2,2,4,4,4,6,4,4,4
+Bottom size distribution & stability,Stream Bed,12,4,4,4,8,16,16,12,12,8
+Scouring and deposition,Stream Bed,6,6,12,6,6,24,24,24,24,24
+Clinging aquatic vegetation,Stream Bed,1,1,1,1,3,3,2,3,3,4
