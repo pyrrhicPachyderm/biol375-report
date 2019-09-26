@@ -21,3 +21,10 @@ Clean: clean
 	@$(RM) $(maindoc).pdf
 
 .PHONY: all pvc clean Clean
+
+presence-absence-notes.pdf: presence-absence-notes.tex
+	latexmk $(LATEXMK_FLAGS) --jobname="$(basename $@)" $<
+
+notes: presence-absence-notes.pdf
+
+.PHONY: notes

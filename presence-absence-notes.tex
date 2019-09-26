@@ -1,0 +1,61 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+\usepackage[all]{nowidow}
+\usepackage{siunitx}
+\usepackage{enumerate}
+
+\let\dotlessi\i %Copy the definition so we can safely redefine \i
+\newcommand\naive{na\"{\dotlessi}ve}
+\newcommand\Naive{Na\"{\dotlessi}ve}
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+\newcommand\abs[1]{\left\lvert#1\right\rvert}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand{\D}[1]{\mathop{\d #1}}
+\renewcommand{\i}{\mathrm{i}}
+\newcommand{\e}{\mathrm{e}}
+\newcommand{\Imat}{\mathrm{I}}
+\newcommand{\bigO}{\mathcal{O}}
+\newcommand{\transpose}[1]{{#1}^{\mathrm{T}}}
+
+%Have to delete existing commands first.
+\let\Re\relax
+\let\Im\relax
+\DeclareMathOperator{\Re}{Re}
+\DeclareMathOperator{\Im}{Im}
+\DeclareMathOperator{\trace}{tr}
+\DeclareMathOperator{\J}{J}
+
+\begin{document}
+
+This an attempt to show an equivalence between one of Critchlow's six metrics and one of betadiver's eighteen.
+
+Presence-absence data means there are only two ranks available for the partially ranked data, 1 and 2.
+Let rank 1 be presence and rank 2 be absence.
+This means that, equating betadiver's notation with Critchlow's, we have:
+\begin{align*}
+	a &= n_{11}\\
+	b &= n_{12}\\
+	c &= n_{21}\\
+	d &= n_{22}\\
+\end{align*}
+We shall convert everything to betadiver's notation for convenience.
+
+Kendall's tau:
+\begin{align*}
+	T^*\left(S\pi, S'\rho\right)
+	&= \max \left\{ \Sigma_{i < i',j \geq j'} n_{ij}n_{i'j'} , \Sigma_{i \leq i',j > j'} n_{ij}n_{i'j'} \right\}\\
+	&= \max \left\{ n_{11}n_{21} + n_{12}n_{21} + n_{12}n_{22} , n_{12}n_{11} + n_{12}n_{21} + n_{22}n_{21} \right\}\\
+	&= \max \left\{ ac + bc + bd , ab + bc + cd \right\}\\
+	&= \max \left\{ ac + bd , ab + cd \right\} + bc\\
+\end{align*}
+
+Spearman's rho:
+\begin{align*}
+	R^*\left(S\pi, S'\rho\right)
+	&= \\
+\end{align*}
+
+\end{document}
