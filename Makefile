@@ -50,6 +50,8 @@ data/processed/taxa-list.csv: data/raw/taxa-list.csv scripts/csv-fill-missing sc
 
 data/processed/site-distance-matrix.csv: data/processed/taxa-list.csv scripts/critchlow-metrics
 	scripts/critchlow-metrics -t tau $< $@
+data/processed/taxa-distance-matrix.csv: data/processed/taxa-list.csv scripts/critchlow-metrics
+	scripts/critchlow-metrics tau $< $@
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".
