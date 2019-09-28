@@ -11,8 +11,8 @@ extern size_t ordinaliseDataTableInt(DataTableInt *table);
 
 //Define a type of function pointer: MetricDistanceMatrixFunc
 //They take a DataTableInt and return a corresponding DistanceMatrix
-typedef DistanceMatrix *(*DistanceMatrixFunc)(const DataTableInt *table);
+typedef DistanceMatrix *(*DistanceMatrixFunc)(const DataTableInt *table, size_t numRanks);
 
-extern DistanceMatrix *ulamDistanceMatrix(const DataTableInt *table);
+extern DistanceMatrix *ulamDistanceMatrix(const DataTableInt *table, size_t numRanks);
 
 #endif
