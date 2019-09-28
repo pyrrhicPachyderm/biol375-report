@@ -1,0 +1,18 @@
+#!/bin/sh
+#Fills missing values in a CSV file with a given value.
+#Reads from stdin, output to stdout.
+
+readonly usage="Usage: $0 <value to fill with>"
+
+if [ "$#" -ne 1 ]; then
+	echo "$usage"
+	exit 1
+else
+	fill_val="$1"
+fi
+
+#Double the middle sed up, 'cause otherwise it alternates long streams of commas.
+sed "s/^,/$fill_val,/g" \
+	| sed "s/,,/,$fill_val,/g" \
+	| sed "s/,,/,$fill_val,/g" \
+	| sed "s/,$/,$fill_val/g"

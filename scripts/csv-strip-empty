@@ -1,0 +1,10 @@
+#!/bin/sh
+#Strips rows with 0 occurrences from a CSV file.
+#Reads from stdin, output to stdout.
+
+#Pass the header line straight through
+read -r header
+echo "$header"
+
+#Just take all the lines with a positive digit in them.
+grep '[1-9]'

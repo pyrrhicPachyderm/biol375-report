@@ -1,3 +1,10 @@
+data/processed/*
+
+#C files
+*.o
+*.d
+scripts/critchlow-metrics
+
 ## Core latex/pdflatex auxiliary files:
 *.aux
 *.lof
