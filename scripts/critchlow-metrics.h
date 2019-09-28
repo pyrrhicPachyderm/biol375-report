@@ -7,6 +7,16 @@
 #include <stdbool.h>
 #include "tables.h"
 
+typedef struct nij_matrix_s {
+	size_t numRanks;
+	
+	size_t *nijs;
+} NijMatrix;
+
+extern void freeNijMatrix(NijMatrix *nij);
+
+extern NijMatrix *getNij(const int *a, const int *b, size_t length, size_t numRanks);
+
 extern size_t ordinaliseDataTableInt(DataTableInt *table);
 
 //Define a type of function pointer: MetricDistanceMatrixFunc
@@ -14,5 +24,7 @@ extern size_t ordinaliseDataTableInt(DataTableInt *table);
 typedef DistanceMatrix *(*DistanceMatrixFunc)(const DataTableInt *table, size_t numRanks);
 
 extern DistanceMatrix *ulamDistanceMatrix(const DataTableInt *table, size_t numRanks);
+
+extern DistanceMatrix *tauDistanceMatrix(const DataTableInt *table, size_t numRanks);
 
 #endif
