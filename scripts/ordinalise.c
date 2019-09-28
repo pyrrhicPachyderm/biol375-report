@@ -57,5 +57,7 @@ size_t ordinaliseDataTableInt(DataTableInt *table) {
 		}
 	}
 	
+	free(ranks);
+	
 	return numRanks;
 }

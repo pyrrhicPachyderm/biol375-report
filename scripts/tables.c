@@ -29,7 +29,7 @@ void setDataTableInt(DataTableInt *table, size_t obsNum, size_t varNum, int val)
 	table->data[obsNum * table->numVars + varNum] = val;
 }
 
-int getDataTableInt(DataTableInt *table, size_t obsNum, size_t varNum) {
+int getDataTableInt(const DataTableInt *table, size_t obsNum, size_t varNum) {
 	return table->data[obsNum * table->numVars + varNum];
 }
 
@@ -41,6 +41,10 @@ void setDataTableIntVarName(DataTableInt *table, size_t varNum, const char *name
 void setDataTableIntObsName(DataTableInt *table, size_t obsNum, const char *name) {
 	free(table->obsNames[obsNum]);
 	table->obsNames[obsNum] = strdup(name);
+}
+
+const int *getRowDataTableInt(const DataTableInt *table, size_t obsNum) {
+	return &(table->data[obsNum * table->numVars]);
 }
 
 void freeDataTableInt(DataTableInt *table) {
@@ -226,7 +230,7 @@ void setDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2, long
 	mat->distances[obsNum1 * mat->numObs + obsNum2] = val;
 }
 
-long long unsigned int getDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2) {
+long long unsigned int getDistanceMatrix(const DistanceMatrix *mat, size_t obsNum1, size_t obsNum2) {
 	return mat->distances[obsNum1 * mat->numObs + obsNum2];
 }
 
@@ -241,4 +245,13 @@ void freeDistanceMatrix(DistanceMatrix *mat) {
 	free(mat->obsNames);
 	free(mat->distances);
 	free(mat);
+}
+
+//Allocs a DistanceMatrix corresponding to given DataTableInt.
+//Copies the observation names over too.
+DistanceMatrix *correspondingDistanceMatrix(const DataTableInt *table) {
+	DistanceMatrix *mat = allocDistanceMatrix(table->numObs);
+	for(size_t i = 0; i < mat->numObs; i++)
+		setDistanceMatrixObsName(mat, i, table->obsNames[i]);
+	return mat;
 }

@@ -13,15 +13,15 @@ NijMatrix *callocNijMatrix(size_t numRanks) {
 }
 
 void setNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2, long long unsigned int val) {
-	nij->nijs[rank1 * nij->numObs + rank2] = val;
+	nij->nijs[rank1 * nij->numRanks + rank2] = val;
 }
 
-long long unsigned int getNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2) {
-	return nij->nijs[rank1 * nij->numObs + rank2];
+long long unsigned int getNijMatrix(const NijMatrix *nij, size_t rank1, size_t rank2) {
+	return nij->nijs[rank1 * nij->numRanks + rank2];
 }
 
 void incrementNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2) {
-	nij->nijs[rank1 * nij->numObs + rank2] ++;
+	nij->nijs[rank1 * nij->numRanks + rank2] ++;
 }
 
 void freeNijMatrix(NijMatrix *nij) {
@@ -39,4 +39,6 @@ NijMatrix *getNij(const int *a, const int *b, size_t length, size_t numRanks) {
 	for(size_t i = 0; i < length; i++) {
 		incrementNijMatrix(nij, a[i], b[i]);
 	}
+	
+	return nij;
 }

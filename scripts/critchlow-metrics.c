@@ -16,7 +16,7 @@
 int usageErr(int argc, char *argv[]) {
 	fprintf(stderr,
 		"Usage: %s [OPTIONS] <metric> <infile> <outfile>\n"
-		"\tThe only metric currently supported is 'ulam'\n"
+		"\tThe only metric currently supported is 'tau'\n"
 		"Options:\n"
 		"\t -t\n"
 		"\t\tTranspose: Each column is an observation, each variable a row\n",
@@ -51,8 +51,10 @@ int main(int argc, char *argv[]) {
 	
 	//Select the appropriate function based on the metric name.
 	DistanceMatrixFunc metricFunc;
-	if(strcmp(metricName, "ulam") == 0) {
+	/*if(strcmp(metricName, "ulam") == 0) {
 		metricFunc = &ulamDistanceMatrix;
+	}*/ if(strcmp(metricName, "tau") == 0) {
+		metricFunc = &tauDistanceMatrix;
 	} else {
 		fprintf(stderr, "%s is not a supported metric.\n", metricName);
 		exit(1);
@@ -61,10 +63,13 @@ int main(int argc, char *argv[]) {
 	DataTableInt *table = readCSVDataTableInt(infileName, transpose);
 	//DistanceMatrix *distMat = metricFunc(table);
 	
-	ordinaliseDataTableInt(table);
+	size_t numRanks = ordinaliseDataTableInt(table);
+	DistanceMatrix *mat = metricFunc(table, numRanks);
 	
-	printCSVDataTableInt(outfileName, table, false);
+	//printCSVDataTableInt(outfileName, table, false);
 	
+	freeDataTableInt(table);
+	freeDistanceMatrix(mat);
 	return 0;
 }
 
