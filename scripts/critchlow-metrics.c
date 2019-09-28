@@ -61,6 +61,8 @@ int main(int argc, char *argv[]) {
 	DataTableInt *table = readCSVDataTableInt(infileName, transpose);
 	//DistanceMatrix *distMat = metricFunc(table);
 	
+	ordinaliseDataTableInt(table);
+	
 	printCSVDataTableInt(outfileName, table, false);
 	
 	return 0;
