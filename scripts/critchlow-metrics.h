@@ -7,7 +7,7 @@
 #include <stdbool.h>
 #include "tables.h"
 
-extern int ordinaliseDataTableInt(DataTableInt *table);
+extern size_t ordinaliseDataTableInt(DataTableInt *table);
 
 //Define a type of function pointer: MetricDistanceMatrixFunc
 //They take a DataTableInt and return a corresponding DistanceMatrix

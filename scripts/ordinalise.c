@@ -19,7 +19,7 @@ int intCompareAscending(const void *p, const void *q) {
 //Converts the elements of the data table to consecutive integers, beginning at zero.
 //Preserves ordinal properties.
 //Returns the number of ranks.
-int ordinaliseDataTableInt(DataTableInt *table) {
+size_t ordinaliseDataTableInt(DataTableInt *table) {
 	//First, we need to determine how many ranks are present, and what number maps to what.
 	//Grab a linearised copy of the data to do this.
 	size_t dataLen = table->numVars * table->numObs;
