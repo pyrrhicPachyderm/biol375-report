@@ -210,6 +210,35 @@ void printCSVDataTableInt(const char *filename, DataTableInt *table, bool transp
 	fclose(file);
 }
 
-DistanceMatrix *allocDistanceMatrix(size_t numVars) {
-	return NULL;
+DistanceMatrix *allocDistanceMatrix(size_t numObs) {
+	DistanceMatrix *mat = malloc(sizeof(DistanceMatrix));
+	mat->numObs = numObs;
+	
+	mat->distances = malloc(mat->numObs * mat->numObs * sizeof(double));
+	mat->obsNames = malloc(mat->numObs  * sizeof(char*));
+	for(size_t i = 0; i < mat->numObs; i++)
+		mat->obsNames[i] = NULL;
+	
+	return mat;
+}
+
+void setDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2, double val) {
+	mat->distances[obsNum1 * mat->numObs + obsNum2] = val;
+}
+
+double getDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2) {
+	return mat->distances[obsNum1 * mat->numObs + obsNum2];
+}
+
+void setDistanceMatrixObsName(DistanceMatrix *mat, size_t obsNum, const char *name) {
+	free(mat->obsNames[obsNum]);
+	mat->obsNames[obsNum] = strdup(name);
+}
+
+void freeDistanceMatrix(DistanceMatrix *mat) {
+	for(size_t i = 0; i < mat->numObs; i++)
+		free(mat->obsNames[i]);
+	free(mat->obsNames);
+	free(mat->distances);
+	free(mat);
 }

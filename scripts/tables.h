@@ -36,8 +36,17 @@ typedef struct distance_matrix_s {
 	size_t numObs;
 	
 	double *distances;
+	char **obsNames;
 } DistanceMatrix;
 
 extern DistanceMatrix *allocDistanceMatrix(size_t numVars);
+
+extern void setDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2, double val);
+
+extern double getDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2);
+
+extern void setDistanceMatrixObsName(DistanceMatrix *mat, size_t obsNum, const char *name);
+
+extern void freeDistanceMatrix(DistanceMatrix *mat);
 
 #endif

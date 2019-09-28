@@ -49,7 +49,7 @@ data/processed/taxa-list.csv: data/raw/taxa-list.csv scripts/csv-fill-missing sc
 		> $@
 
 data/processed/site-distance-matrix.csv: data/processed/taxa-list.csv scripts/critchlow-metrics
-	scripts/critchlow-metrics ulam $< $@
+	scripts/critchlow-metrics -t ulam $< $@
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".
