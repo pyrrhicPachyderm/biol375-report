@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 	size_t numRanks = ordinaliseDataTableInt(table);
 	DistanceMatrix *mat = metricFunc(table, numRanks);
 	
-	//printCSVDataTableInt(outfileName, table, false);
+	printCSVDistanceMatrix(outfileName, mat);
 	
 	freeDataTableInt(table);
 	freeDistanceMatrix(mat);

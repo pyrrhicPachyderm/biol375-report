@@ -174,7 +174,7 @@ DataTableInt *readCSVDataTableInt(const char* filename, bool transpose) {
 	return table;
 }
 
-void printCSVDataTableInt(const char *filename, DataTableInt *table, bool transpose) {
+void printCSVDataTableInt(const char *filename, const DataTableInt *table, bool transpose) {
 	FILE* file = openFile(filename, "w");
 	
 	size_t numRows;
@@ -245,6 +245,27 @@ void freeDistanceMatrix(DistanceMatrix *mat) {
 	free(mat->obsNames);
 	free(mat->distances);
 	free(mat);
+}
+
+void printCSVDistanceMatrix(const char *filename, const DistanceMatrix *mat) {
+	FILE* file = openFile(filename, "w");
+	
+	//Print the header line.
+	for(size_t col = 0; col < mat->numObs; col++) {
+		fprintf(file, ",%s", mat->obsNames[col]);
+	}
+	fprintf(file, "\n");
+	
+	//Print the rows.
+	for(size_t row = 0; row < mat->numObs; row++) {
+		fprintf(file, "%s", mat->obsNames[row]);
+		for(size_t col = 0; col < mat->numObs; col++) {
+			fprintf(file, ",%llu", getDistanceMatrix(mat, row, col));
+		}
+		fprintf(file, "\n");
+	}
+	
+	fclose(file);
 }
 
 //Allocs a DistanceMatrix corresponding to given DataTableInt.

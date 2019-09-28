@@ -31,7 +31,7 @@ extern void freeDataTableInt(DataTableInt *table);
 
 extern DataTableInt *readCSVDataTableInt(const char* filename, bool transpose);
 
-extern void printCSVDataTableInt(const char *filename, DataTableInt *table, bool transpose);
+extern void printCSVDataTableInt(const char *filename, const DataTableInt *table, bool transpose);
 
 typedef struct distance_matrix_s {
 	size_t numObs;
@@ -49,6 +49,8 @@ extern long long unsigned int getDistanceMatrix(const DistanceMatrix *mat, size_
 extern void setDistanceMatrixObsName(DistanceMatrix *mat, size_t obsNum, const char *name);
 
 extern void freeDistanceMatrix(DistanceMatrix *mat);
+
+extern void printCSVDistanceMatrix(const char *filename, const DistanceMatrix *mat);
 
 //Allocs a DistanceMatrix corresponding to given DataTableInt.
 //Copies the observation names over too.
