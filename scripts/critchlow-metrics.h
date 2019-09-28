@@ -10,7 +10,7 @@
 typedef struct nij_matrix_s {
 	size_t numRanks;
 	
-	size_t *nijs;
+	long long unsigned int *nijs;
 } NijMatrix;
 
 extern void freeNijMatrix(NijMatrix *nij);

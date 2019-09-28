@@ -7,20 +7,20 @@
 NijMatrix *callocNijMatrix(size_t numRanks) {
 	NijMatrix *nij = malloc(sizeof(NijMatrix));
 	nij->numRanks = numRanks;
-	nij->nijs = calloc(nij->numRanks * nij->numRanks, sizeof(size_t));
+	nij->nijs = calloc(nij->numRanks * nij->numRanks, sizeof(long long unsigned int));
 	
 	return nij;
 }
 
-void setNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2, size_t val) {
+void setNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2, long long unsigned int val) {
 	nij->nijs[rank1 * nij->numObs + rank2] = val;
 }
 
-size_t getNijMatrix(NijMatrix *nij, size_t rank1, size_t obsNum2) {
+long long unsigned int getNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2) {
 	return nij->nijs[rank1 * nij->numObs + rank2];
 }
 
-void incrementNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2, size_t val) {
+void incrementNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2) {
 	nij->nijs[rank1 * nij->numObs + rank2] ++;
 }
 
