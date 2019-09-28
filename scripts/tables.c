@@ -214,7 +214,7 @@ DistanceMatrix *allocDistanceMatrix(size_t numObs) {
 	DistanceMatrix *mat = malloc(sizeof(DistanceMatrix));
 	mat->numObs = numObs;
 	
-	mat->distances = malloc(mat->numObs * mat->numObs * sizeof(double));
+	mat->distances = malloc(mat->numObs * mat->numObs * sizeof(long long unsigned int));
 	mat->obsNames = malloc(mat->numObs  * sizeof(char*));
 	for(size_t i = 0; i < mat->numObs; i++)
 		mat->obsNames[i] = NULL;
@@ -222,11 +222,11 @@ DistanceMatrix *allocDistanceMatrix(size_t numObs) {
 	return mat;
 }
 
-void setDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2, double val) {
+void setDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2, long long unsigned int val) {
 	mat->distances[obsNum1 * mat->numObs + obsNum2] = val;
 }
 
-double getDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2) {
+long long unsigned int getDistanceMatrix(DistanceMatrix *mat, size_t obsNum1, size_t obsNum2) {
 	return mat->distances[obsNum1 * mat->numObs + obsNum2];
 }
 

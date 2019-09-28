@@ -16,7 +16,7 @@ void setNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2, size_t val) {
 	nij->nijs[rank1 * nij->numObs + rank2] = val;
 }
 
-double getNijMatrix(NijMatrix *nij, size_t rank1, size_t obsNum2) {
+size_t getNijMatrix(NijMatrix *nij, size_t rank1, size_t obsNum2) {
 	return nij->nijs[rank1 * nij->numObs + rank2];
 }
 
