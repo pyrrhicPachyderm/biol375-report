@@ -24,7 +24,7 @@
 \DeclareNameAlias{sortname}{last-first} %Ditto for everything else
 \DeclareNameAlias{default}{last-first}
 
-\AtEveryBibitem{\clearfield{number}} %Removes issue numbers, but leaves volume numbers.
+%\AtEveryBibitem{\clearfield{number}} %Removes issue numbers, but leaves volume numbers.
 \AtEveryBibitem{\clearfield{month}} %Removes month of publication.
 \AtEveryBibitem{\clearfield{note}} %Removes the `note' field.
 
@@ -40,29 +40,29 @@
 \DeclareFieldFormat[article]{pages}{#1} %Removes pp. or p. from article pages ranges.
 \DeclareFieldFormat[article,inproceedings,inbook,thesis]{title}{#1} %Removes quotes around article/chapter/thesis title.
 
-%Add a comma after the journal title for articles.
+%Add a period after the journal title for articles.
 \xpatchbibmacro{journal+issuetitle}{%
 	\usebibmacro{journal}%
 	\setunit*{\addspace}%
 }{%
 	\usebibmacro{journal}%
-	\setunit*{\addcomma\addspace}%
+	\setunit*{\adddot\addspace}%
 }{}{}
 
-%Swap so that publisher comes *before* location.
-\xpatchbibmacro{publisher+location+date}{%
-	\printlist{location}%
-	\iflistundef{publisher}
-		{\setunit*{\addcomma\space}}
-		{\setunit*{\addcolon\space}}%
-	\printlist{publisher}%
-}{%
-	\printlist{publisher}%
-	\iflistundef{location}
-		{}
-		{\setunit*{\addcomma\space}}%%
-	\printlist{location}%
-}{}{}
+%%Swap so that publisher comes *before* location.
+%\xpatchbibmacro{publisher+location+date}{%
+%	\printlist{location}%
+%	\iflistundef{publisher}
+%		{\setunit*{\addcomma\space}}
+%		{\setunit*{\addcolon\space}}%
+%	\printlist{publisher}%
+%}{%
+%	\printlist{publisher}%
+%	\iflistundef{location}
+%		{}
+%		{\setunit*{\addcomma\space}}%%
+%	\printlist{location}%
+%}{}{}
 
 %TODO: Test and if necessary correct handling of book editions numbers.
 %See https://onlinelibrary.wiley.com/doi/epdf/10.1111/ele.13171 for handling in existing paper.
@@ -80,84 +80,84 @@
 	}%
 }{}{}
 
-%Remove the extra period that gets forced in after the booktitle, allowing the bibdrivers to handle it properly.
-\xpatchbibmacro{booktitle}{%
-	\newunit
-}{%
-	%Just delete it; replace it with nothing.
-}{}{}
-%Ditto; remove the extra period.
-\xpatchbibmacro{maintitle+booktitle}{%
-	\usebibmacro{booktitle}%
-	\newunit%
-}{%
-	\usebibmacro{booktitle}%
-}{}{}
+%%Remove the extra period that gets forced in after the booktitle, allowing the bibdrivers to handle it properly.
+%\xpatchbibmacro{booktitle}{%
+%	\newunit
+%}{%
+%	%Just delete it; replace it with nothing.
+%}{}{}
+%%Ditto; remove the extra period.
+%\xpatchbibmacro{maintitle+booktitle}{%
+%	\usebibmacro{booktitle}%
+%	\newunit%
+%}{%
+%	\usebibmacro{booktitle}%
+%}{}{}
 
-%Remove period between book title and editors.
-\xpatchbibdriver{inbook}{%
-	\usebibmacro{maintitle+booktitle}%
-	\newunit\newblock
-	\usebibmacro{byeditor+others}%
-}{%
-	\usebibmacro{maintitle+booktitle}%
-	{\setunit*{\space}}
-	\usebibmacro{byeditor+others}%
-}{}{}
-%As above, for inproceedings.
-\xpatchbibdriver{inproceedings}{%
-	\usebibmacro{maintitle+booktitle}%
-	\newunit\newblock
-	\usebibmacro{event+venue+date}%
-	\newunit\newblock
-	\usebibmacro{byeditor+others}%
-}{%
-	\usebibmacro{maintitle+booktitle}%
-	%{\setunit*{\space}}
-	%\usebibmacro{event+venue+date}%Have to knock this out to get no period between booktitle and editors. TODO: Check this is okay.
-	%{\setunit*{\space}}\newblock
-	\usebibmacro{byeditor+others}%
-}{}{}
+%%Remove period between book title and editors.
+%\xpatchbibdriver{inbook}{%
+%	\usebibmacro{maintitle+booktitle}%
+%	\newunit\newblock
+%	\usebibmacro{byeditor+others}%
+%}{%
+%	\usebibmacro{maintitle+booktitle}%
+%	{\setunit*{\space}}
+%	\usebibmacro{byeditor+others}%
+%}{}{}
+%%As above, for inproceedings.
+%\xpatchbibdriver{inproceedings}{%
+%	\usebibmacro{maintitle+booktitle}%
+%	\newunit\newblock
+%	\usebibmacro{event+venue+date}%
+%	\newunit\newblock
+%	\usebibmacro{byeditor+others}%
+%}{%
+%	\usebibmacro{maintitle+booktitle}%
+%	%{\setunit*{\space}}
+%	%\usebibmacro{event+venue+date}%Have to knock this out to get no period between booktitle and editors. TODO: Check this is okay.
+%	%{\setunit*{\space}}\newblock
+%	\usebibmacro{byeditor+others}%
+%}{}{}
 
-%Wrap the editor info in parentheses. Use the correct editor string.
-\renewbibmacro*{byeditor+others}{%
-	\ifboolexpr{
-		test {\ifnameundef{editor}}
-		and
-		test {\ifnameundef{editora}}
-		and
-		test {\ifnameundef{editorb}}
-		and
-		test {\ifnameundef{editorc}}
-		and
-		test {\ifnameundef{translator}}
-		and
-		test {\ifnameundef{commentator}}
-		and
-		test {\ifnameundef{annotator}}
-		and
-		test {\ifnameundef{introduction}}
-		and
-		test {\ifnameundef{foreword}}
-		and
-		test {\ifnameundef{afterword}}
-	}
-	{} %If we'd be printing no names at all, don't bother with the parentheses.
-	{
-		\printtext[parens]{%
-			\ifnameundef{editor}
-				{}
-				{\usebibmacro{editorstrg}%This is also changed, from `byeditor+othersstrg'.
-				\setunit{\addspace}%
-				\printnames[byeditor]{editor}%
-				\clearname{editor}%
-				\newunit
-			}%
-			\usebibmacro{byeditorx}%
-			\usebibmacro{bytranslator+others}%
-		}%
-	}%
-}
+%%Wrap the editor info in parentheses. Use the correct editor string.
+%\renewbibmacro*{byeditor+others}{%
+%	\ifboolexpr{
+%		test {\ifnameundef{editor}}
+%		and
+%		test {\ifnameundef{editora}}
+%		and
+%		test {\ifnameundef{editorb}}
+%		and
+%		test {\ifnameundef{editorc}}
+%		and
+%		test {\ifnameundef{translator}}
+%		and
+%		test {\ifnameundef{commentator}}
+%		and
+%		test {\ifnameundef{annotator}}
+%		and
+%		test {\ifnameundef{introduction}}
+%		and
+%		test {\ifnameundef{foreword}}
+%		and
+%		test {\ifnameundef{afterword}}
+%	}
+%	{} %If we'd be printing no names at all, don't bother with the parentheses.
+%	{
+%		\printtext[parens]{%
+%			\ifnameundef{editor}
+%				{}
+%				{\usebibmacro{editorstrg}%This is also changed, from `byeditor+othersstrg'.
+%				\setunit{\addspace}%
+%				\printnames[byeditor]{editor}%
+%				\clearname{editor}%
+%				\newunit
+%			}%
+%			\usebibmacro{byeditorx}%
+%			\usebibmacro{bytranslator+others}%
+%		}%
+%	}%
+%}
 
 %TODO: Check book and inbook format. Article and inproceedings should be okay.
 
@@ -190,7 +190,55 @@
 	}
 }
 
-%Join to authors with an ampersand, not 'and'
+%Articles currently go `volume.issue`
+%We want `volume(issue)`
+% No dot before number of articles
+\xpatchbibmacro{volume+number+eid}{%
+	\setunit*{\adddot}%
+}{%
+}{}{}
+% Number of articles in parentheses
+\DeclareFieldFormat[article]{number}{\mkbibparens{#1}}
+
+%We want a colon to introduce the page range, not a comma.
+%We also don't want any space after the coolon.
+\renewcommand*{\bibpagespunct}{\addcolon}
+
+%Change the punctuation between the volume number and volume title to a comma, for books with a maintitle.
+\xpatchbibmacro{maintitle+title}{%
+	\setunit{\addcolon\space}%
+}{%
+	\setunit{\addcomma\space}%
+}{}{}
+
+%Change how editors are printed.
+%No brackets, and byeditor+othersstrg comes *after* the name list.
+%Translators are before editors.
+%Change byeditor+othersstrg (ed. by) to editorstrg (ed.)
+\renewbibmacro*{byeditor+others}{%
+	\usebibmacro{bytranslator+others}%
+	\ifnameundef{editor}
+		{}
+		{\printnames[byeditor]{editor}%
+			%\clearname{editor}%If we clear this, editorstrg doesn't know to be plural
+			\setunit{\addcomma\space}%
+			\usebibmacro{editorstrg}%
+		\newunit}%
+	\usebibmacro{byeditorx}%
+}
+%editorstrg uses the abbreviated versions of the bibstring. We want the full ones.
+\xpatchbibmacro{editorstrg}{%
+	\bibstring{editor}%
+}{%
+	\biblstring{editor}%biblstrign always forces the long version
+}{}{}
+\xpatchbibmacro{editorstrg}{%
+	\bibstring{editors}%
+}{%
+	\biblstring{editors}%biblstrign always forces the long version
+}{}{}
+
+%Join two authors with an ampersand, not 'and'
 %\renewcommand*{\finalnamedelim}{\addspace\&\addspace}
 
 %Remove the comma betwen the surname and the initials
