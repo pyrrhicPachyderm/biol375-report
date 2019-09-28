@@ -13,6 +13,8 @@ typedef struct nij_matrix_s {
 	long long unsigned int *nijs;
 } NijMatrix;
 
+extern long long unsigned int getNijMatrix(NijMatrix *nij, size_t rank1, size_t rank2);
+
 extern void freeNijMatrix(NijMatrix *nij);
 
 extern NijMatrix *getNij(const int *a, const int *b, size_t length, size_t numRanks);
