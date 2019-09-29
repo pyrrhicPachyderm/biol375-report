@@ -82,7 +82,13 @@
 
 \section*{Abstract}
 
-Blah.
+The effect of disturbance upon $\alpha$-diversity has been debated for many years, focussing upon the intermediate disturbance hypothesis.
+The effect on $\beta$-diversity has only been studied more recently, with conflicting result.
+Disturbance may homogenise communities through species filtering or diversify them by allowing stochastic colonisation.
+
+We studied diversity of freshwater macroinvertebrates across a stream disturbance gradient in Canterbury, New Zealand.
+We found that disturbance caused a monotonic reduction of $\alpha$-diversity and a shift in community composition, but had no significant effect on $\beta$-diversity.
+We posit that this is a result of both species filtering and stochastic colonisation acting in opposition to one another.
 
 \bigskip\noindent\emph{Keywords}:
 beta diversity,
@@ -93,8 +99,6 @@ disturbance
 %TODO: Keywords
 
 \clearpage
-
-%TODO: Some level of standardisation on whether we are talking about stability or about disturbance.
 
 \section*{Introduction}
 
@@ -112,7 +116,7 @@ it may reduce $\beta$-diversity through uniformly removing taxa that are not res
 or it may increase $\beta$-diversity, replacing deterministic dominance by the competitively superior species with the stochastic process of colonisation \parencite{disturbance-beta-meta}.
 Both responses have been observed empirically \parencite{disturbance-increase-beta, homogenisation-agriculture}, and meta-analysis has yielded no conclusive results \parencite{disturbance-beta-meta}.
 
-We studied freshwater macroinvertebrate communities across a disturbance gradient in ten waterways in the Cass region of Canterbury, in order to test the effects of disturbance on $\alpha$-diversity, $\beta$-diversity and community composition.
+We studied freshwater macroinvertebrate communities across a disturbance gradient in ten waterways in the Cass region of Canterbury, New Zealand, in order to test the effects of disturbance on $\alpha$-diversity, $\beta$-diversity and community composition.
 
 \section*{Methods}
 
@@ -120,8 +124,8 @@ Ten waterways around the Cass region of Canterbury, New Zealand were selected fo
 Five were braided rivers, highly disturbed.
 The other five were more stable spring-fed streams.
 To confirm this intuition, we assessed the Pfankuch Stability Score of each stream \parencite{pfankuch, pfankuch-doc}.
-The Pfankuch scores of the ten streams divided them clearly into a stable and unstable cluster, exactly as predicted (Figure \ref{fig:regressions}).
-As such, we remained confident in treating stability categorically through the permutational tests.
+The Pfankuch scores of the ten streams divided them clearly into a stable and disturbed cluster, exactly as predicted (Figure \ref{fig:regressions}).
+As such, we remained confident in treating disturbance categorically through the permutational tests.
 
 At each waterway, a kick net sample of macroinvertebrates was taken.
 Sampling occurred at five points inside each stream, selected by eye to be as diverse as possible within the reach.
@@ -132,7 +136,7 @@ To keep sampling time reasonable, abundances were recorded semi-quantitatively a
 0, 1--4, 5--19 and 20--99 (nothing above this range was observed).
 Stoneflies, mayflies and caddisflies were resolved to the genus level; other taxa were resolved between the phylum and genus level, as far as possible.
 
-To examine the effect of stream stability upon $\alpha$-diversity, we performed two generalised linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
+To examine the effect of stream disturbance upon $\alpha$-diversity, we performed two generalised linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
 Due to the count nature of the data and under- and over-dispersion in a Poisson regression, we use a quasi-Poisson regression.
 
 For the remainder of the analyses, a dissimilarity was calculated between each pair of sites.
@@ -150,9 +154,9 @@ These analyses were performed using \texttt{R}, with the \texttt{vegan} package 
 
 \section*{Results}
 
-According to the Pfankuch scores, the sampled waterways ran nearly the full gamut of stability.
+According to the Pfankuch scores, the sampled waterways ran nearly the full gamut of disturbance.
 The score ranges from 38 to 152, and the sampled streams ranged from 47 to 125.
-Stable streams always exhibited abundant macrophyte life, while the unstable waterways, the braided rivers, had essentially no vegetation below the upper banks.
+Stable streams always exhibited abundant macrophyte life, while the disturbed waterways, the braided rivers, had essentially no vegetation below the upper banks.
 
 26 different taxa were observed in total, many in only one stream and some only once.
 One taxon, however, the mayfly genus \spbinom{Deleatidium}, was present in every stream sampled.
@@ -174,12 +178,12 @@ There was no difference in community dispersion between the stable and the distu
 
 Our data showed no evidence in support of the intermediate disturbance hypothesis.
 $\alpha$-diversity increased monotonically with increasing stability, agreeing entirely with the results of \textcite{diversity-stability-canterbury}, who also studied freshwater macroinvertebrates in the Cass region.
-It is worth noting that, due to the selection of either stable or disturbed streams, there is a gap with no sites at a very intermediate stability.
+It is worth noting that, due to the selection of either stable or disturbed streams, there is a gap with no sites at a very intermediate disturbance.
 However, the small relative width of the gap and the very linear relationship of the sampled sites strongly suggests that there is no intermediate hump.
 
 One way in which a study may fail to find evidence of the IDH is that the sampled range of their predictor variable was insufficient to encompass the diversity peak.
 To be the case here, the peak would have to lie at a more stable stream than any we sampled.
-We find that unlikely to be the case here, as teh stable streams were very low-order, spring-fed streams, and reached very nearly to the bottom of the Pfankuck scale; more stable streams could barely exist.
+We find that unlikely to be the case here, as the stable streams were very low-order, spring-fed streams, and reached very nearly to the bottom of the Pfankuck scale; more stable streams could barely exist.
 
 A likely reason for the observed pattern of $\alpha$-diversity lies in the fact that increasing disturbance in the studied streams was accompanied by decreasing habitat heterogeneity.
 Stable streams contained abundant macrophytes, while the disturbed streams were bare, rocky braided riverbeds.
@@ -188,7 +192,7 @@ Moreover, the increased habitat heterogeneity may help to avoid the competitive 
 
 We observed a significant shift in community composition between the disturbed and stable streams.
 This is no great surprise; its seems as though every study of community composition under disturbance has seen the same result \parencite{disturbance-composition-invasion, disturbance-composition-simulate, disturbance-composition-desert, meta-richness-disturbance}.
-This might reflect species sorting caused by the disturbance, where less resistant and resilient species are filtered out of the disturbed streams.
+This might reflect species filtering caused by the disturbance, where less resistant and resilient species are filtered out of the disturbed streams.
 This might homogenise the disturbed streams, in turn decreasing their $\beta$-diversity \parencite{disturbance-beta-meta}.
 %TODO: Shelled+cased.
 
@@ -199,8 +203,8 @@ As such, we would expect differences in their communities due to this alone, suc
 We observed no significant change in community dispersion, $\beta$-diversity, between disturbed and stable streams.
 This is perhaps unsurprising, considering that there are proposed mechanisms by which disturbance might influence $\beta$-diversity in both directions.
 Indeed, a meta-analysis by \textcite{disturbance-beta-meta} found no consistent, significant effect in either direction.
-Our result implies that either both mechanisms (homogenisation due to species sorting and diversification due to stochastic colonisation) were acting in opposition to one another, or that neither is acting particularly strongly.
-Considering that there were several species present only the stable streams, species sorting probably was occurring, and hence both mechanisms were probably in force.
+Our result implies that either both mechanisms (homogenisation due to species filtering and diversification due to stochastic colonisation) were acting in opposition to one another, or that neither is acting particularly strongly.
+Considering that there were several species present only in the stable streams, species filtering probably was occurring, and hence both mechanisms were probably in force.
 
 Overall, we have observed several important effects of disturbance on the stream macroinvertebrate communities.
 It applies a species filter, reducing taxonomic richness and shifting the community composition.
@@ -223,8 +227,8 @@ But our data also suggest that such filtering can free space in the disturbed st
 		\caption{}\label{fig:richness-regression}
 	\end{subfigure}
 	\caption[Regression plots]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
-		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream stability gradient around Cass, Cantebury.
-		A higher Pfankuch Stability Score indicates a more disturbed (less stable) stream.
+		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream disturbance gradient around Cass, Cantebury.
+		A higher Pfankuch Stability Score indicates a more disturbed stream.
 		Quasi-Poisson generalised linear regression lines are also shown, with \SI{95}{\percent} confidence intervals.
 		Data gathered {\datadate}.
 	}\label{fig:regressions}
