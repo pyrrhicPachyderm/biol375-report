@@ -1,0 +1,36 @@
+#!/usr/bin/env Rscript
+
+#Gathers a taxa-list in wide format from a CSV file into a tidy format.
+#The output comes in three columns:
+#site, taxon, value
+
+library(tidyverse)
+library(magrittr)
+library(optparse)
+
+option_list <- list(
+	make_option(c("-t", "--transpose"), type = "logical", action="store_true", default=FALSE, dest="transpose",
+		help="Sites are in columsn rather than rows")
+)
+parser <- OptionParser(usage = "%prog [options] <taxa list CSV> <output file>", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 2)
+
+input_file <- arguments$args[1]
+output_file <- arguments$args[2]
+
+transpose <- arguments$options$transpose
+
+data <- read_csv(input_file)
+
+if(!transpose) {
+	names(data)[1] <- "site"
+	data %<>%
+		gather(key = "taxon", value = "value", -1)
+} else {
+	names(data)[1] <- "taxon"
+	data %<>%
+		gather(key = "site", value = "value", -1) %>%
+		select("site", "taxon", "value") #Ensure ordering
+}
+
+write_csv(data, output_file)

@@ -52,6 +52,8 @@ data/processed/site-distance-matrix.csv: scripts/critchlow-metrics data/processe
 	$< -t tau $(word 2,$^) $@
 data/processed/taxa-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
 	$< tau $(word 2,$^) $@
+data/processed/taxa-list-tidy.csv: scripts/gather-taxa-list data/processed/taxa-list.csv
+	$< -t $(word 2,$^) $@
 
 figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e
