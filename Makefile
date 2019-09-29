@@ -5,9 +5,12 @@ RM := rm -f
 
 c_scripts := scripts/critchlow-metrics
 
+figures := figures/richness-regression.svg figures/abundance-regression.svg figures/site-ordination.svg figures/taxa-ordination.svg
+results := results/richness-regression.tex results/abundance-regression.tex
+
 all: $(maindoc).pdf
 
-$(maindoc).pdf: $(maindoc).tex $(maindoc).bib reference-style.tex
+$(maindoc).pdf: $(maindoc).tex $(maindoc).bib reference-style.tex $(figures) $(results)
 	latexmk $(LATEXMK_FLAGS) --jobname="$(basename $@)" $<
 pvc: $(maindoc).pdf
 	latexmk $(LATEXMK_FLAGS) --jobname="$(basename $<)" $< --pvc
@@ -68,6 +71,11 @@ figures/richness-regression.svg: scripts/regression data/processed/taxa-richness
 	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Taxonomic Richness"
 figures/abundance-regression.svg: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
 	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Total Coded Abundance"
+
+results/richness-regression.tex: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -t $@
+results/abundance-regression.tex: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -t $@
 
 figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e

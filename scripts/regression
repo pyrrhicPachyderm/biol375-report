@@ -58,3 +58,25 @@ if(is_plot) {
 	plot(plot_object)
 	dev.off()
 }
+
+if(is_tex) {
+	model <- lm(response~predictor, data=data)
+	
+	r2 <- summary(model)$r.squared
+	numerator_df <- summary(model)$fstatistic['numdf']
+	denominator_df <- summary(model)$fstatistic['dendf']
+	f_val <- summary(model)$fstatistic['value']
+	p_val <- summary(model)$coefficients[-1,4]
+	
+	p_val_string <- sprintf("= %.3f", p_val)
+	if(p_val_string == "= 0.000") {
+		p_val_string <- sprintf("< 0.001")
+	}
+	
+	out_string <- sprintf("$r^2 = %.3f$, $F_{%d,%d} = %.2f$, $p %s$",
+		r2, numerator_df, denominator_df, f_val, p_val_string)
+	
+	file_connection <- file(tex_file)
+	writeLines(out_string, file_connection)
+	close(file_connection)
+}
