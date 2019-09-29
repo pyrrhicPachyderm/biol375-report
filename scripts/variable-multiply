@@ -1,0 +1,31 @@
+#!/usr/bin/env Rscript
+
+#Reads a tidied CSV file with three columns:
+#site, variable, value
+#Reads a second CSV file with two columns:
+#variable, value
+#joins on variable, multiplies values, and prints in the first format
+
+library(tidyverse)
+library(magrittr)
+library(optparse)
+
+option_list <- list()
+parser <- OptionParser(usage = "%prog [options] <site data CSV> <variable data CSV> <output CSV>", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 3)
+
+site_input_file <- arguments$args[1]
+variable_input_file <- arguments$args[2]
+output_file <- arguments$args[3]
+
+data <- read_csv(site_input_file)
+names(data) <- c("site", "variable", "value")
+variable_data <- read_csv(variable_input_file)
+names(variable_data) <- c("variable", "variable_value")
+
+data %<>%
+	inner_join(variable_data, by = "variable") %>%
+	mutate(value = value * variable_value) %>%
+	select(site, variable, value)
+
+write_csv(data, output_file)

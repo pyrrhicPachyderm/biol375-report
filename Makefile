@@ -62,6 +62,11 @@ data/processed/taxa-abundance.csv: scripts/summarise data/processed/taxa-list-ti
 data/processed/taxa-richness.csv: scripts/summarise data/processed/taxa-list-tidy.csv
 	./$< count $(word 2,$^) $@
 
+data/processed/taxa-list-shelled.csv: scripts/variable-multiply data/processed/taxa-list-tidy.csv data/raw/taxa-shell-data.csv
+	./$< $(word 2,$^) $(word 3,$^) $@
+data/processed/taxa-abundance-shelled.csv: scripts/summarise data/processed/taxa-list-shelled.csv
+	./$< sum $(word 2,$^) $@
+
 data/processed/pfankuch-tidy.csv: scripts/gather data/raw/pfankuch.csv
 	./$< -t -i 1 $(word 2,$^) $@
 data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tidy.csv
