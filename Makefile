@@ -5,8 +5,9 @@ RM := rm -f
 
 c_scripts := scripts/critchlow-metrics
 
-figures := figures/richness-regression.pdf figures/abundance-regression.pdf figures/site-ordination.pdf figures/taxa-ordination.pdf
-results := results/richness-regression.tex results/abundance-regression.tex results/permanova.tex results/permdisp.tex
+figures := figures/richness-regression.pdf figures/abundance-regression.pdf figures/site-ordination.pdf figures/taxa-ordination.pdf figures/shell-abundance-regression.pdf
+results := results/richness-regression.tex results/abundance-regression.tex results/permanova.tex results/permdisp.tex results/shell-abundance-regression.tex
+
 
 all: $(maindoc).pdf
 
@@ -81,6 +82,11 @@ results/richness-regression.tex: scripts/regression data/processed/taxa-richness
 	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 results/abundance-regression.tex: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
 	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
+
+figures/shell-abundance-regression.pdf: scripts/regression data/processed/taxa-abundance-shelled.csv data/processed/pfankuch-total.csv data/processed/taxa-abundance.csv
+	./$< binomial $(word 2,$^) $(word 3,$^) -b $(word 4,$^) -p $@ -x "Pfankuch Stability Score" -y "Proportion of Shelled Individuals" -w 8 -v 5
+results/shell-abundance-regression.tex: scripts/regression data/processed/taxa-abundance-shelled.csv data/processed/pfankuch-total.csv data/processed/taxa-abundance.csv
+	./$< binomial $(word 2,$^) $(word 3,$^) -b $(word 4,$^) -t $@
 
 figures/site-ordination.pdf: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	./$< $(word 2,$^) -p $@ -f $(word 3,$^) -e
