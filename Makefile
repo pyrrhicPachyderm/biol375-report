@@ -57,6 +57,8 @@ data/processed/taxa-list-tidy.csv: scripts/gather-taxa-list data/processed/taxa-
 
 figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e
+figures/taxa-ordination.svg: scripts/mds data/processed/taxa-distance-matrix.csv
+	$< $(word 2,$^) $@
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".
