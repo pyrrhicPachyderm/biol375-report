@@ -65,6 +65,8 @@
 	\emph{\StrLeft{\genus}{1}. \species}%
 }
 
+\newcommand\datadate{5 September 2019} %The date the fieldwork was performed on.
+
 \title{A Comparison of Macroinvertebrate $\alpha$- and $\beta$-Diversity in Disturbed and Stable Streams}
 \author{
 	Christopher Brown\\15413822
@@ -127,8 +129,14 @@ These analyses were performed using \texttt{R}, with the \texttt{vegan} package 
 
 \section*{Results}
 
+%TODO: Some general observations before the tests.
+
 As the stability of the studied streams increased (as the Pfankuch score decreased), there was a clear, monotonic, more than two-fold increase of both macroinvertebrate abundance (\inputresults{abundance-regression}) and taxonomic richness (\inputresults{richness-regression}) (Figure \ref{fig:regressions}).
 %TODO: Report the correct things for a Poisson regression.
+
+The site ordination is shown Figure \ref{fig:site-ordination}.
+There was no difference in community dispersion between the stable and the disturbed streams (\inputresults{permdisp}), but the community compositions differed significantly (\inputresults{permanova}).
+%TODO: Report the correct things for PERMANOVA and PERMDISP.
 
 \section*{Discussion}
 
@@ -140,7 +148,7 @@ As the stability of the studied streams increased (as the Pfankuch score decreas
 	\centering
 	\begin{subfigure}[t]{\textwidth}
 		\centering
-		\includegraphics[width=\textwidth]{figures/abundance-regression}
+		\includegraphics[width=\textwidth]{abundance-regression}
 		\caption{}\label{fig:abundance-regression}
 	\end{subfigure}
 	\begin{subfigure}[t]{\textwidth}
@@ -152,10 +160,20 @@ As the stability of the studied streams increased (as the Pfankuch score decreas
 		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream stability gradient around Cass, Cantebury.
 		A higher Pfankuch Stability Score indicates a more disturbed (less stable) stream.
 		Quasi-Poisson generalised linear regression lines are also shown, with \SI{95}{\percent} confidence intervals.
+		Data gathered {\datadate}.
 	}\label{fig:regressions}
 \end{figure}
 
-%TODO: Floats
+\begin{figure}[p]
+	\centering
+	\includegraphics[width=\textwidth]{site-ordination}
+	\caption[Site ordination]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
+		An ordination (metric multidimensional scaling) of macroinvertebrate community composition in streams around Cass, Canterbury.
+		Based upon semi-quantitative coded abundance data, with site-site distances defined by the Hausdorff extension of Kendall's tau metric.
+		Produced using the \texttt{cmdscale} function in \texttt{R}.
+		Data gathered {\datadate}.
+	}\label{fig:site-ordination}
+\end{figure}
 
 %TODO: Do CI ellipses make sense in MDS?
 
