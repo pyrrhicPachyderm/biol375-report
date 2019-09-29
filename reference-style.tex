@@ -247,6 +247,16 @@
 %Remove the comma between the surname and the initials
 \renewcommand*{\revsdnamepunct}{}
 
+%Put the junior part after the initials
+%https://tex.stackexchange.com/a/209951 without punctuation
+%TODO: Deal with this later
+%\renewbibmacro{name:last-first}[4]{
+%	\usebibmacro{name:delim}{#3#1}%
+%	\ifblank{#3}{#1}{#3 #1}\addspace
+%	#2\isdot
+%	\ifblank{#4}{}{\addspace #4}
+%}
+
 %Remove all italics from the bibliography with a nasty hack:
 %There are some options we only want to apply in the bibliograph, so here's a nasty hack.
 \let\printinnerbibliography\printbibliography %Copy the original command so we can modify it
