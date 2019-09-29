@@ -18,7 +18,7 @@
 %\ExecuteBibliographyOptions{uniquename=false,uniquelist=false}%Disables disambiguation that would violate the min/max names above.
 \ExecuteBibliographyOptions{giveninits=true} %Initialises all given names.
 \ExecuteBibliographyOptions{terseinits=true} %Removes periods and spaces around initials
-\ExecuteBibliographyOptions{doi=false, eprint=false, url=false, isbn=false}
+\ExecuteBibliographyOptions{doi=false, eprint=false, isbn=false}
 
 \DeclareNameAlias{author}{last-first} %Ensures all authors are given as "surname, given initials", rather than "given initials surname".
 \DeclareNameAlias{sortname}{last-first} %Ditto for everything else
@@ -238,10 +238,13 @@
 	\biblstring{editors}%biblstrign always forces the long version
 }{}{}
 
+%Remove `URL:` preceeding urls.
+\DeclareFieldFormat{url}{\url{#1}}
+
 %Join two authors with an ampersand, not 'and'
 %\renewcommand*{\finalnamedelim}{\addspace\&\addspace}
 
-%Remove the comma betwen the surname and the initials
+%Remove the comma between the surname and the initials
 \renewcommand*{\revsdnamepunct}{}
 
 %Remove all italics from the bibliography with a nasty hack:
@@ -256,3 +259,6 @@
 	\end{refcontext}
 	\endgroup
 }
+
+%TODO: See if I can get this to work for author names ending in s.
+\newcommand\possessivecite[1]{\citeauthor{#1}'s (\citeyear{#1})}
