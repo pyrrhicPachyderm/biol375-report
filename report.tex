@@ -136,8 +136,10 @@ To keep sampling time reasonable, abundances were recorded semi-quantitatively a
 0, 1--4, 5--19 and 20--99 (nothing above this range was observed).
 Stoneflies, mayflies and caddisflies were resolved to the genus level; other taxa were resolved between the phylum and genus level, as far as possible.
 
-To examine the effect of stream disturbance upon $\alpha$-diversity, we performed two generalised linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
+To examine the effect of stream disturbance upon $\alpha$-diversity, we performed two generalised linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch score.
 Due to the count nature of the data and under- and over-dispersion in a Poisson regression, we use a quasi-Poisson regression.
+A third generalised linear regression (binomial) examined the proportion of macroinvertebrates which has a shell or case, again as a function of the Pfankuch score.
+It is worth noting that this was not actually a true proportion due to the semi-quantitative nature of the abundances (simply the total coded abundance of cased and shelled taxa divided by the total coded abundance of all taxa).
 
 For the remainder of the analyses, a dissimilarity was calculated between each pair of sites.
 To make full use of the collected semi-quantitative (ordinal, partially ranked) data, we use the Hausdorff extension of an edit distance metric, as developed by \textcite{critchlow} and recommended by \textcite{dissimilarity-partially-ranked}.
@@ -172,7 +174,8 @@ The site ordination is shown Figure \ref{fig:site-ordination}.
 There was no difference in community dispersion between the stable and the disturbed streams (\inputresults{permdisp}), but the community compositions differed significantly (\inputresults{permanova}).
 %TODO: Report the correct things for PERMANOVA and PERMDISP.
 
-%TODO: Summarise the shift in community composition. Binomial regression on shells?
+There was a significant decrease in the proportion of shelled macroinvertebrates with increasing Pfankuch score (\inputresults{taxa-abundance-shelled}; Figure \ref{fig:shell-abundance-regression}).
+Although this was not a true proportion, the trend is plain.
 
 \section*{Discussion}
 
@@ -236,7 +239,7 @@ And thanks to Eva Delmas for directing me to the paper that finally unravelled t
 	\end{subfigure}
 	\caption[Regression plots]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
 		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream disturbance gradient around Cass, Cantebury.
-		A higher Pfankuch Stability Score indicates a more disturbed stream.
+		A higher Pfankuch score indicates a more disturbed stream.
 		Quasi-Poisson generalised linear regression lines are also shown, with \SI{95}{\percent} confidence intervals.
 		Data gathered {\datadate}.
 	}\label{fig:regressions}
