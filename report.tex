@@ -93,10 +93,23 @@ disturbance
 
 \section*{Methods}
 
-%TODO: Field stuff.
+Ten waterways around the Cass region of Canterbury, New Zealand were selected for the study.
+Five were braided rivers, highly disturbed.
+The other five were more stable spring-fed streams.
+To confirm this intuition, we assessed the Pfankuch Stability Score of each stream \parencite{pfankuch, pfankuch-doc}.
+The Pfankuch scores of the ten streams divided them clearly into a stable and unstable cluster, exactly as predicted \ref{fig:regression}.
+As such, we remained confident in treating stability categorically through the permutational tests.
+
+At each waterway, a kick net sample of macroinvertebrates was taken.
+Sampling occurred at five points inside each stream, selected by eye to be as diverse as possible within the reach.
+All five samples per stream were combined in the same net.
 Samples were bagged with water and live-picked later the same day.
 
-%TODO: Regression stuff.
+To keep sampling time reasonable, abundances were recorded semi-quantitatively according to the same coded-abundance categories as use in calculating \possessivecite{sqmci} Semi-Quantitative Macroinvertebrate Community Index:
+0, 1--4, 5--19 and 20--99 (nothing above this range was observed).
+Stoneflies, mayflies and caddisflies were resolved to the genus level; other taxa were resolved between the phylum and genus level, as far as possible.
+
+To examine the effect of stream stability upon $\alpha$-diversity, we performed two linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
 
 For the remainder of the analyses, a dissimilarity was calculated between each pair of sites.
 To make full use of the collected semi-quantitative (ordinal, partially ranked) data, we use the Hausdorff extension of an edit distance metric, as developed by \textcite{critchlow} and recommended by \textcite{dissimilarity-partially-ranked}.
@@ -104,7 +117,7 @@ In particular, we used Kendall's tau, reasoning that ecological gradients were m
 %TODO: Address concerns from dissimilarity-partially-ranked about using low values as much as high values: we won't fall on both dies of the mode as we seem to have a linear gradient (no IDH).
 
 From the metric distance matrix, we created an ordination plot using classical multidimensional scaling.
-We tested for differences in community composition between the disturbed and stable streams using a permutational multivariate ANOVA, and for differences in commuinty dispersion using \possessivecite{permdisp2} permutation test.
+We tested for differences in community composition between the disturbed and stable streams using a permutational multivariate ANOVA, and for differences in community dispersion using \possessivecite{permdisp2} permutation test.
 These analyses were performed using \texttt{R}, with the \texttt{vegan} package \parencite{vegan} for the permutation tests.
 
 %TODO: GitHub
