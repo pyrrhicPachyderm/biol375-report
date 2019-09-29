@@ -47,45 +47,45 @@ notes: notes/presence-absence-notes.pdf
 
 data/processed/taxa-list.csv: data/raw/taxa-list.csv scripts/csv-fill-missing scripts/csv-strip-empty
 	< $< \
-		scripts/csv-fill-missing 0 \
-		| scripts/csv-strip-empty \
+		./$(word 2,$^) 0 \
+		| ./$(word 3,$^) \
 		> $@
 
 data/processed/site-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
-	$< -t tau $(word 2,$^) $@
+	./$< -t tau $(word 2,$^) $@
 data/processed/taxa-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
-	$< tau $(word 2,$^) $@
+	./$< tau $(word 2,$^) $@
 data/processed/taxa-list-tidy.csv: scripts/gather data/processed/taxa-list.csv
-	$< -t $(word 2,$^) $@
+	./$< -t $(word 2,$^) $@
 data/processed/taxa-abundance.csv: scripts/summarise data/processed/taxa-list-tidy.csv
-	$< sum $(word 2,$^) $@
+	./$< sum $(word 2,$^) $@
 data/processed/taxa-richness.csv: scripts/summarise data/processed/taxa-list-tidy.csv
-	$< count $(word 2,$^) $@
+	./$< count $(word 2,$^) $@
 
 data/processed/pfankuch-tidy.csv: scripts/gather data/raw/pfankuch.csv
-	$< -t -i 1 $(word 2,$^) $@
+	./$< -t -i 1 $(word 2,$^) $@
 data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tidy.csv
-	$< sum $(word 2,$^) $@
+	./$< sum $(word 2,$^) $@
 
 figures/richness-regression.pdf: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
 figures/abundance-regression.pdf: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
 
 results/richness-regression.tex: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 results/abundance-regression.tex: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 
 figures/site-ordination.pdf: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
-	$< $(word 2,$^) -p $@ -f $(word 3,$^) -e
+	./$< $(word 2,$^) -p $@ -f $(word 3,$^) -e
 figures/taxa-ordination.pdf: scripts/mds data/processed/taxa-distance-matrix.csv
-	$< $(word 2,$^) -p $@
+	./$< $(word 2,$^) -p $@
 
 results/permanova.tex: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
-	$< $(word 2,$^) -f $(word 3,$^) -a $@
+	./$< $(word 2,$^) -f $(word 3,$^) -a $@
 results/permdisp.tex: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
-	$< $(word 2,$^) -f $(word 3,$^) -d $@
+	./$< $(word 2,$^) -f $(word 3,$^) -d $@
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".
