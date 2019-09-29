@@ -13,51 +13,120 @@ option_list <- list(
 	make_option(c("-f", "--factorfile"), type = "character", action="store", default=FALSE, dest="factor_file",
 		help="A CSV file containing two columns; the first with the same names as the sites in the distance matrix, the second with a factorial predictor"),
 	make_option(c("-e", "--ellipses"), type = "logical", action="store_true", default=FALSE, dest="ellipses",
-		help="Draw 95% CI ellipses on the plot")
+		help="Draw 95% CI ellipses on the plot"),
+	make_option(c("-p", "--plotfile"), type = "character", action="store", default=FALSE, dest="plot_file",
+		help="A PDF file to save the MDS plot in"),
+	make_option(c("-a", "--permanova"), type = "character", action="store", default=FALSE, dest="permanova_file",
+		help="A TeX file to save the PERMANOVA results in (requires a factor file)"),
+	make_option(c("-d", "--permdisp"), type = "character", action="store", default=FALSE, dest="permdisp_file",
+		help="A TeX file to save the PERMDISP results in (requires a factor file)")
 )
-parser <- OptionParser(usage = "%prog [options] <distance matrix CSV> <plot output file>", option_list=option_list)
-arguments <- parse_args(parser, positional_arguments = 2)
+parser <- OptionParser(usage = "%prog [options] <distance matrix CSV>", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 1)
 
 dist_matrix_file <- arguments$args[1]
-output_file <- arguments$args[2]
 
 factor_file <- arguments$options$factor_file
 ellipses <- arguments$options$ellipses
+plot_file <- arguments$options$plot_file
+permanova_file <- arguments$options$permanova_file
+permdisp_file <- arguments$options$permdisp_file
 
+is_factor <- is.character(factor_file) && (factor_file != "FALSE")
+is_plot <- is.character(plot_file) && (plot_file != "FALSE")
+is_permanova <- is.character(permanova_file) && (permanova_file != "FALSE")
+is_permdisp <- is.character(permdisp_file) && (permdisp_file != "FALSE")
+
+if(is_permanova && !is_factor) {
+	cat("Cannot perform PERMANOVA without a factor.\n")
+	quit()
+}
+if(is_permdisp && !is_factor) {
+	cat("Cannot perform PERMDISP without a factor.\n")
+	quit()
+}
 
 dist_matrix_table <- read_csv(dist_matrix_file)
 dist_matrix <- as.dist(dist_matrix_table[-1])
 
-mds <- cmdscale(dist_matrix)
-#mds has the x and y coordinates as columns, and we label them as such.
-colnames(mds) <- c("x", "y")
-#Convert the row names to a column
-mds <- cbind(name = rownames(mds), data.frame(mds, row.names=NULL))
-
-#If we have the factor file, we want to add the factor on.
-is_factor <- is.character(factor_file) && (factor_file != "FALSE")
 if(is_factor) {
 	factor_data <- read_csv(factor_file)
 	names(factor_data) <- c("name", "factor")
 	factor_data$factor <- as.factor(factor_data$factor)
-	mds %<>% inner_join(factor_data, by = "name")
 }
 
-pdf(output_file)
-plot_object <- ggplot(mds) +
-	aes(x = x, y = y, label = name) +
-	xlab("MDS1") +
-	ylab("MDS2") +
-	geom_point()
+if(is_plot) {
+	mds <- cmdscale(dist_matrix)
+	#mds has the x and y coordinates as columns, and we label them as such.
+	colnames(mds) <- c("x", "y")
+	#Convert the row names to a column
+	mds <- cbind(name = rownames(mds), data.frame(mds, row.names=NULL))
+	
+	#If we have the factor file, we want to add the factor on.
+	if(is_factor) {
+		mds %<>% inner_join(factor_data, by = "name")
+	}
+	
+	pdf(plot_file)
+	plot_object <- ggplot(mds) +
+		aes(x = x, y = y, label = name) +
+		xlab("MDS1") +
+		ylab("MDS2") +
+		geom_point()
+	
+	if(ellipses)
+		plot_object <- plot_object + stat_ellipse()
+	
+	if(is_factor)
+		plot_object <- plot_object + aes(colour = factor)
+	
+	#Got to put this on after the ellipses so it goes on top.
+	plot_object <- plot_object + geom_text_repel(colour = "black")
+	
+	plot(plot_object)
+	dev.off()
+}
 
-if(ellipses)
-	plot_object <- plot_object + stat_ellipse()
+#TODO: THis appears in the regression script too; DRY!
+p_stringify <- function(p_val) {
+	p_val_string <- sprintf("p = %.3f", p_val)
+	if(p_val_string == "p = 0.000") {
+		p_val_string <- sprintf("p < 0.001")
+	}
+	return(p_val_string)
+}
 
-if(is_factor)
-	plot_object <- plot_object + aes(colour = factor)
+if(is_permanova) {
+	model <- vegan::adonis(dist_matrix ~ factor, data = factor_data)
+	model <- model$aov.tab
+	
+	r2 <- model[1,5]
+	numerator_df <- model[1,1]
+	denominator_df <- model[2,1]
+	f_val <- model[1,4]
+	p_val <- model[1,6]
+	
+	out_string <- sprintf("$r^2 = %.3f$, $F_{%d,%d} = %.2f$, $%s$",
+		r2, numerator_df, denominator_df, f_val, p_stringify(p_val))
+	
+	file_connection <- file(permanova_file)
+	writeLines(out_string, file_connection)
+	close(file_connection)
+}
 
-#Got to put his on after the allipses so it goes on top.
-plot_object <- plot_object + geom_text_repel(colour = "black")
-
-plot(plot_object)
-dev.off()
+if(is_permdisp) {
+	model <- vegan::betadisper(dist_matrix, factor_data$factor)
+	model <- anova(model)
+	
+	numerator_df <- model[1,1]
+	denominator_df <- model[2,1]
+	f_val <- model[1,4]
+	p_val <- model[1,5]
+	
+	out_string <- sprintf("$F_{%d,%d} = %.2f$, $%s$",
+		numerator_df, denominator_df, f_val, p_stringify(p_val))
+	
+	file_connection <- file(permdisp_file)
+	writeLines(out_string, file_connection)
+	close(file_connection)
+}

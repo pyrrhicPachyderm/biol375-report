@@ -16,7 +16,7 @@ library(optparse)
 
 option_list <- list(
 	make_option(c("-p", "--plotfile"), type = "character", action="store", default=FALSE, dest="plot_file",
-		help="An SVG file to output the plot to"),
+		help="A PDF file to output the plot to"),
 	make_option(c("-t", "--texfile"), type = "character", action="store", default=FALSE, dest="tex_file",
 		help="A TeX file to output the statistics to"),
 	make_option(c("-x", "--xlab"), type = "character", action="store", default="predictor", dest="x_label",

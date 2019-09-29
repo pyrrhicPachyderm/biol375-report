@@ -6,7 +6,7 @@ RM := rm -f
 c_scripts := scripts/critchlow-metrics
 
 figures := figures/richness-regression.pdf figures/abundance-regression.pdf figures/site-ordination.pdf figures/taxa-ordination.pdf
-results := results/richness-regression.tex results/abundance-regression.tex
+results := results/richness-regression.tex results/abundance-regression.tex results/permanova.tex results/permdisp.tex
 
 all: $(maindoc).pdf
 
@@ -78,9 +78,14 @@ results/abundance-regression.tex: scripts/regression data/processed/taxa-abundan
 	$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 
 figures/site-ordination.pdf: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
-	$< $(word 2,$^) $@ -f $(word 3,$^) -e
+	$< $(word 2,$^) -p $@ -f $(word 3,$^) -e
 figures/taxa-ordination.pdf: scripts/mds data/processed/taxa-distance-matrix.csv
-	$< $(word 2,$^) $@
+	$< $(word 2,$^) -p $@
+
+results/permanova.tex: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
+	$< $(word 2,$^) -f $(word 3,$^) -a $@
+results/permdisp.tex: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
+	$< $(word 2,$^) -f $(word 3,$^) -d $@
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".
