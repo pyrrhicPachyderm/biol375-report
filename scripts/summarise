@@ -1,0 +1,32 @@
+#!/usr/bin/env Rscript
+
+#Reads a tidied CSV file with three columns:
+#site, variable, value
+#Summarises per site
+
+library(tidyverse)
+library(magrittr)
+library(optparse)
+
+option_list <- list()
+parser <- OptionParser(usage = "%prog [options] <summary function> <input CSV> <output CSV>\n\treponse is `sum` or `count`", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 3)
+
+summary_function <- arguments$args[1]
+input_file <- arguments$args[2]
+output_file <- arguments$args[3]
+
+data <- read_csv(input_file)
+names(data) <- c("site", "variable", "value")
+
+data %<>% group_by(site)
+if(summary_function == "sum") {
+	data %<>% summarise(response = sum(value))
+} else if(summary_function == "count") {
+	data %<>% summarise(response = sum(value != 0))
+} else {
+	cat("Invalid summary function.\n")
+	quit()
+}
+
+write_csv(data, output_file)

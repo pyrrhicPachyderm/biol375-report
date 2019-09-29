@@ -52,8 +52,22 @@ data/processed/site-distance-matrix.csv: scripts/critchlow-metrics data/processe
 	$< -t tau $(word 2,$^) $@
 data/processed/taxa-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
 	$< tau $(word 2,$^) $@
-data/processed/taxa-list-tidy.csv: scripts/gather-taxa-list data/processed/taxa-list.csv
+data/processed/taxa-list-tidy.csv: scripts/gather data/processed/taxa-list.csv
 	$< -t $(word 2,$^) $@
+data/processed/taxa-abundance.csv: scripts/summarise data/processed/taxa-list-tidy.csv
+	$< sum $(word 2,$^) $@
+data/processed/taxa-richness.csv: scripts/summarise data/processed/taxa-list-tidy.csv
+	$< count $(word 2,$^) $@
+
+data/processed/pfankuch-tidy.csv: scripts/gather data/raw/pfankuch.csv
+	$< -t -i 1 $(word 2,$^) $@
+data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tidy.csv
+	$< sum $(word 2,$^) $@
+
+figures/richness-regression.svg: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Taxonomic Richness"
+figures/abundance-regression.svg: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Total Coded Abundance"
 
 figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e

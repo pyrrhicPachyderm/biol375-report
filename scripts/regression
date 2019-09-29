@@ -1,0 +1,62 @@
+#!/usr/bin/env Rscript
+
+#Reads two csv files with two columns
+#Both have the same set of sites in the first column
+#One has a predictor variable in the second, the other a response
+
+#Optionally plots the regression line
+#Optionally gives a file with the r^2, F and p values, formatted for TeX.
+
+set.seed(0)
+
+library(tidyverse)
+library(magrittr)
+library(ggrepel)
+library(optparse)
+
+option_list <- list(
+	make_option(c("-p", "--plotfile"), type = "character", action="store", default=FALSE, dest="plot_file",
+		help="An SVG file to output the plot to"),
+	make_option(c("-t", "--texfile"), type = "character", action="store", default=FALSE, dest="tex_file",
+		help="A TeX file to output the statistics to"),
+	make_option(c("-x", "--xlab"), type = "character", action="store", default="predictor", dest="x_label",
+		help="The x-axis label for the graph"),
+	make_option(c("-y", "--ylab"), type = "character", action="store", default="response", dest="y_label",
+		help="The y-axis label for the graph")
+)
+parser <- OptionParser(usage = "%prog [options] <response CSV> <predictor CSV>", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 2)
+
+response_file <- arguments$args[1]
+predictor_file <- arguments$args[2]
+
+plot_file <- arguments$options$plot_file
+tex_file <- arguments$options$tex_file
+x_label <- arguments$options$x_label
+y_label <- arguments$options$y_label
+
+is_plot <- is.character(plot_file) && (plot_file != "FALSE")
+is_tex <- is.character(tex_file) && (tex_file != "FALSE")
+
+response_data <- read_csv(response_file)
+names(response_data) <- c("site", "response")
+predictor_data <- read_csv(predictor_file)
+names(predictor_data) <- c("site", "predictor")
+
+data <- inner_join(response_data, predictor_data, by = "site")
+
+data
+
+if(is_plot) {
+	svg(plot_file)
+	plot_object <- ggplot(data) +
+		aes(x=predictor, y=response, label=site) +
+		expand_limits(y=0) +
+		geom_smooth(method='lm',formula=y~x) +
+		geom_point() +
+		geom_text_repel() +
+		xlab(x_label) +
+		ylab(y_label)
+	plot(plot_object)
+	dev.off()
+}
