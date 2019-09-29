@@ -111,7 +111,8 @@ To keep sampling time reasonable, abundances were recorded semi-quantitatively a
 0, 1--4, 5--19 and 20--99 (nothing above this range was observed).
 Stoneflies, mayflies and caddisflies were resolved to the genus level; other taxa were resolved between the phylum and genus level, as far as possible.
 
-To examine the effect of stream stability upon $\alpha$-diversity, we performed two linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
+To examine the effect of stream stability upon $\alpha$-diversity, we performed two generalised linear regressions: taxonomic richness and total coded abundance of each stream as a function of the Pfankuch Stability Score.
+Due to the count nature of the data and under- and over-dispersion in a Poisson regression, we use a quasi-Poisson regression.
 
 For the remainder of the analyses, a dissimilarity was calculated between each pair of sites.
 To make full use of the collected semi-quantitative (ordinal, partially ranked) data, we use the Hausdorff extension of an edit distance metric, as developed by \textcite{critchlow} and recommended by \textcite{dissimilarity-partially-ranked}.
@@ -150,7 +151,7 @@ As the stability of the studied streams increased (as the Pfankuch score decreas
 	\caption[Regression plots]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
 		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream stability gradient around Cass, Cantebury.
 		A higher Pfankuch Stability Score indicates a more disturbed (less stable) stream.
-		Linear regression lines with \SI{95}{\percent} confidence intervals are also shown.
+		Quasi-Poisson generalised linear regression lines with \SI{95}{\percent} confidence intervals are also shown.
 	}\label{fig:regressions}
 \end{figure}
 
