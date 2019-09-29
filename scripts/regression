@@ -28,11 +28,12 @@ option_list <- list(
 	make_option(c("-v", "--height"), type = "numeric", action="store", default="7", dest="plot_height",
 		help="The height of the plot, in inches [default: %default]")
 )
-parser <- OptionParser(usage = "%prog [options] <response CSV> <predictor CSV>", option_list=option_list)
-arguments <- parse_args(parser, positional_arguments = 2)
+parser <- OptionParser(usage = "%prog [options] <method> <response CSV> <predictor CSV>\n\tmethod is `gaussian`, `poisson` or `quasipoisson`", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 3)
 
-response_file <- arguments$args[1]
-predictor_file <- arguments$args[2]
+regression_method <- arguments$args[1]
+response_file <- arguments$args[2]
+predictor_file <- arguments$args[3]
 
 plot_file <- arguments$options$plot_file
 tex_file <- arguments$options$tex_file
@@ -43,6 +44,12 @@ plot_height <- arguments$options$plot_height
 
 is_plot <- is.character(plot_file) && (plot_file != "FALSE")
 is_tex <- is.character(tex_file) && (tex_file != "FALSE")
+
+invalid_method <- function() {
+	cat("Invalid regression method.\n")
+	parser.print_help()
+	quit()
+}
 
 response_data <- read_csv(response_file)
 names(response_data) <- c("site", "response")
@@ -55,8 +62,19 @@ if(is_plot) {
 	pdf(plot_file, width=plot_width, height=plot_height)
 	plot_object <- ggplot(data) +
 		aes(x=predictor, y=response, label=site) +
-		expand_limits(y=0) +
-		geom_smooth(method='lm',formula=y~x) +
+		expand_limits(y=0)
+	
+	if(regression_method == "gaussian") {
+		plot_object <- plot_object +
+			geom_smooth(method='lm')
+	} else if(regression_method == "poisson" || regression_method == "quasipoisson") {
+		plot_object <- plot_object +
+			geom_smooth(method='glm', method.args = list(family = regression_method))
+	} else {
+		invalid_method()
+	}
+	
+	plot_object <- plot_object +
 		geom_point() +
 		geom_text_repel() +
 		xlab(x_label) +
@@ -65,22 +83,48 @@ if(is_plot) {
 	dev.off()
 }
 
+p_stringify <- function(p_val) {
+	p_val_string <- sprintf("p = %.3f", p_val)
+	if(p_val_string == "p = 0.000") {
+		p_val_string <- sprintf("p < 0.001")
+	}
+	return(p_val_string)
+}
+
 if(is_tex) {
-	model <- lm(response~predictor, data=data)
-	
-	r2 <- summary(model)$r.squared
-	numerator_df <- summary(model)$fstatistic['numdf']
-	denominator_df <- summary(model)$fstatistic['dendf']
-	f_val <- summary(model)$fstatistic['value']
-	p_val <- summary(model)$coefficients[-1,4]
-	
-	p_val_string <- sprintf("= %.3f", p_val)
-	if(p_val_string == "= 0.000") {
-		p_val_string <- sprintf("< 0.001")
+	if(regression_method == "gaussian") {
+		
+		model <- lm(response~predictor, data=data)
+		
+		r2 <- summary(model)$r.squared
+		numerator_df <- summary(model)$fstatistic['numdf']
+		denominator_df <- summary(model)$fstatistic['dendf']
+		f_val <- summary(model)$fstatistic['value']
+		p_val <- summary(model)$coefficients[-1,4]
+		
+		out_string <- sprintf("$r^2 = %.3f$, $F_{%d,%d} = %.2f$, $%s$",
+			r2, numerator_df, denominator_df, f_val, p_stringify(p_val))
+		
+	} else if(regression_method == "poisson" || regression_method == "quasipoisson") {
+		
+		model <- glm(response~predictor, data=data, family=regression_method)
+		
+		z_val <- summary(model)$coefficients[-1,3]
+		p_val <- summary(model)$coefficients[-1,4]
+		if(regression_method == "poisson") {
+			dispersion_parameter <- summary(model)$deviance / summary(model)$df.residual
+		} else if(regression_method == "quasipoisson") {
+			dispersion_parameter <- summary(model)$dispersion
+		}
+		
+		out_string <- sprintf("$z = %.2f$, $%s$, $\\text{dispersion parameter} = %.2f$",
+			z_val, p_stringify(p_val), dispersion_parameter)
+		
+	} else {
+		invalid_method()
 	}
 	
-	out_string <- sprintf("$r^2 = %.3f$, $F_{%d,%d} = %.2f$, $p %s$",
-		r2, numerator_df, denominator_df, f_val, p_val_string)
+	
 	
 	file_connection <- file(tex_file)
 	writeLines(out_string, file_connection)

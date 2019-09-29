@@ -68,14 +68,14 @@ data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tid
 	$< sum $(word 2,$^) $@
 
 figures/richness-regression.pdf: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
+	$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
 figures/abundance-regression.pdf: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
+	$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
 
 results/richness-regression.tex: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -t $@
+	$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 results/abundance-regression.tex: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -t $@
+	$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 
 figures/site-ordination.pdf: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e
