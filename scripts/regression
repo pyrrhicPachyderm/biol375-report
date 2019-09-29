@@ -7,7 +7,7 @@
 #Optionally plots the regression line
 #Optionally gives a file with the r^2, F and p values, formatted for TeX.
 
-set.seed(0)
+set.seed(5)
 
 library(tidyverse)
 library(magrittr)
@@ -20,9 +20,13 @@ option_list <- list(
 	make_option(c("-t", "--texfile"), type = "character", action="store", default=FALSE, dest="tex_file",
 		help="A TeX file to output the statistics to"),
 	make_option(c("-x", "--xlab"), type = "character", action="store", default="predictor", dest="x_label",
-		help="The x-axis label for the graph"),
+		help="The x-axis label for the graph [default: %default]"),
 	make_option(c("-y", "--ylab"), type = "character", action="store", default="response", dest="y_label",
-		help="The y-axis label for the graph")
+		help="The y-axis label for the graph [default: %default]"),
+	make_option(c("-w", "--width"), type = "numeric", action="store", default="7", dest="plot_width",
+		help="The width of the plot, in inches [default: %default]"),
+	make_option(c("-v", "--height"), type = "numeric", action="store", default="7", dest="plot_height",
+		help="The height of the plot, in inches [default: %default]")
 )
 parser <- OptionParser(usage = "%prog [options] <response CSV> <predictor CSV>", option_list=option_list)
 arguments <- parse_args(parser, positional_arguments = 2)
@@ -34,6 +38,8 @@ plot_file <- arguments$options$plot_file
 tex_file <- arguments$options$tex_file
 x_label <- arguments$options$x_label
 y_label <- arguments$options$y_label
+plot_width <- arguments$options$plot_width
+plot_height <- arguments$options$plot_height
 
 is_plot <- is.character(plot_file) && (plot_file != "FALSE")
 is_tex <- is.character(tex_file) && (tex_file != "FALSE")
@@ -46,7 +52,7 @@ names(predictor_data) <- c("site", "predictor")
 data <- inner_join(response_data, predictor_data, by = "site")
 
 if(is_plot) {
-	svg(plot_file)
+	pdf(plot_file, width=plot_width, height=plot_height)
 	plot_object <- ggplot(data) +
 		aes(x=predictor, y=response, label=site) +
 		expand_limits(y=0) +

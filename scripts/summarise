@@ -26,6 +26,7 @@ if(summary_function == "sum") {
 	data %<>% summarise(response = sum(value != 0))
 } else {
 	cat("Invalid summary function.\n")
+	parser.print_help()
 	quit()
 }
 

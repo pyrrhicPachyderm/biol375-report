@@ -43,7 +43,7 @@ if(is_factor) {
 	mds %<>% inner_join(factor_data, by = "name")
 }
 
-svg(output_file)
+pdf(output_file)
 plot_object <- ggplot(mds) +
 	aes(x = x, y = y, label = name) +
 	xlab("MDS1") +

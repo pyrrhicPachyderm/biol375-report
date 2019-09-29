@@ -53,6 +53,8 @@
 \DeclareMathOperator{\trace}{tr}
 \DeclareMathOperator{\J}{J}
 
+\newcommand\inputresults[1]{\input{results/#1}\unskip}
+
 %Custom commands
 \usepackage{suffix}%includes \WithSuffix
 \newcommand\spbinom[1]{%
@@ -97,7 +99,7 @@ Ten waterways around the Cass region of Canterbury, New Zealand were selected fo
 Five were braided rivers, highly disturbed.
 The other five were more stable spring-fed streams.
 To confirm this intuition, we assessed the Pfankuch Stability Score of each stream \parencite{pfankuch, pfankuch-doc}.
-The Pfankuch scores of the ten streams divided them clearly into a stable and unstable cluster, exactly as predicted \ref{fig:regression}.
+The Pfankuch scores of the ten streams divided them clearly into a stable and unstable cluster, exactly as predicted (Figure \ref{fig:regressions}).
 As such, we remained confident in treating stability categorically through the permutational tests.
 
 At each waterway, a kick net sample of macroinvertebrates was taken.
@@ -124,11 +126,32 @@ These analyses were performed using \texttt{R}, with the \texttt{vegan} package 
 
 \section*{Results}
 
+As the stability of the studied streams increased (as the Pfankuch score decreased), there was a clear, monotonic, more than two-fold increase of both macroinvertebrate abundance (\inputresults{abundance-regression}) and taxonomic richness (\inputresults{richness-regression}) (Figure \ref{fig:regressions}).
+
 \section*{Discussion}
 
 \section*{Acknowledgements}
 
 \clearpage
+
+\begin{figure}[p]
+	\centering
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{figures/abundance-regression}
+		\caption{}\label{fig:abundance-regression}
+	\end{subfigure}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{richness-regression}
+		\caption{}\label{fig:richness-regression}
+	\end{subfigure}
+	\caption[Regression plots]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
+		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream stability gradient around Cass, Cantebury.
+		A higher Pfankuch Stability Score indicates a more disturbed (less stable) stream.
+		Linear regression lines with \SI{95}{\percent} confidence intervals are also shown.
+	}\label{fig:regressions}
+\end{figure}
 
 %TODO: Floats
 

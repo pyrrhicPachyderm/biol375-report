@@ -5,7 +5,7 @@ RM := rm -f
 
 c_scripts := scripts/critchlow-metrics
 
-figures := figures/richness-regression.svg figures/abundance-regression.svg figures/site-ordination.svg figures/taxa-ordination.svg
+figures := figures/richness-regression.pdf figures/abundance-regression.pdf figures/site-ordination.pdf figures/taxa-ordination.pdf
 results := results/richness-regression.tex results/abundance-regression.tex
 
 all: $(maindoc).pdf
@@ -67,19 +67,19 @@ data/processed/pfankuch-tidy.csv: scripts/gather data/raw/pfankuch.csv
 data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tidy.csv
 	$< sum $(word 2,$^) $@
 
-figures/richness-regression.svg: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Taxonomic Richness"
-figures/abundance-regression.svg: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Index" -y "Total Coded Abundance"
+figures/richness-regression.pdf: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
+figures/abundance-regression.pdf: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
+	$< $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
 
 results/richness-regression.tex: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
 	$< $(word 2,$^) $(word 3,$^) -t $@
 results/abundance-regression.tex: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
 	$< $(word 2,$^) $(word 3,$^) -t $@
 
-figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
+figures/site-ordination.pdf: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
 	$< $(word 2,$^) $@ -f $(word 3,$^) -e
-figures/taxa-ordination.svg: scripts/mds data/processed/taxa-distance-matrix.csv
+figures/taxa-ordination.pdf: scripts/mds data/processed/taxa-distance-matrix.csv
 	$< $(word 2,$^) $@
 
 ######################################################################################################
