@@ -1,0 +1,63 @@
+#!/usr/bin/env Rscript
+
+set.seed(5)
+
+#library(vegan)
+#library(data.table)
+library(tidyverse)
+library(magrittr)
+library(ggrepel)
+library(optparse)
+
+option_list <- list(
+	make_option(c("-f", "--factorfile"), type = "character", action="store", default=FALSE, dest="factor_file",
+		help="A CSV file containing two columns; the first with the same names as the sites in the distance matrix, the second with a factorial predictor"),
+	make_option(c("-e", "--ellipses"), type = "logical", action="store_true", default=FALSE, dest="ellipses",
+		help="Draw 95% CI ellipses on the plot")
+)
+parser <- OptionParser(usage = "%prog [options] <distance matrix CSV> <plot output file>", option_list=option_list)
+arguments <- parse_args(parser, positional_arguments = 2)
+
+dist_matrix_file <- arguments$args[1]
+output_file <- arguments$args[2]
+
+factor_file <- arguments$options$factor_file
+ellipses <- arguments$options$ellipses
+
+
+dist_matrix_table <- read_csv(dist_matrix_file)
+dist_matrix <- as.dist(dist_matrix_table[-1])
+
+mds <- cmdscale(dist_matrix)
+#mds has the x and y coordinates as columns, and we label them as such.
+colnames(mds) <- c("x", "y")
+#Convert the row names to a column
+mds <- cbind(name = rownames(mds), data.frame(mds, row.names=NULL))
+
+#If we have the factor file, we want to add the factor on.
+is_factor <- is.character(factor_file) && (factor_file != "FALSE")
+if(is_factor) {
+	factor_data <- read_csv(factor_file)
+	names(factor_data) <- c("name", "factor")
+	factor_data$factor <- as.factor(factor_data$factor)
+	mds %<>% inner_join(factor_data, by = "name")
+}
+
+svg(output_file)
+plot_object <- ggplot(mds) +
+	aes(x = x, y = y, label = name) +
+	xlab("MDS1") +
+	ylab("MDS2") +
+	geom_point()
+
+if(ellipses)
+	plot_object <- plot_object + stat_ellipse()
+
+if(is_factor)
+	plot_object <- plot_object + aes(colour = factor)
+
+#Got to put his on after the allipses so it goes on top.
+plot_object <- plot_object + geom_text_repel(colour = "black")
+
+plot_object
+dev.off()

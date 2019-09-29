@@ -48,10 +48,13 @@ data/processed/taxa-list.csv: data/raw/taxa-list.csv scripts/csv-fill-missing sc
 		| scripts/csv-strip-empty \
 		> $@
 
-data/processed/site-distance-matrix.csv: data/processed/taxa-list.csv scripts/critchlow-metrics
-	scripts/critchlow-metrics -t tau $< $@
-data/processed/taxa-distance-matrix.csv: data/processed/taxa-list.csv scripts/critchlow-metrics
-	scripts/critchlow-metrics tau $< $@
+data/processed/site-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
+	$< -t tau $(word 2,$^) $@
+data/processed/taxa-distance-matrix.csv: scripts/critchlow-metrics data/processed/taxa-list.csv
+	$< tau $(word 2,$^) $@
+
+figures/site-ordination.svg: scripts/mds data/processed/site-distance-matrix.csv data/raw/stream-stability.csv
+	$< $(word 2,$^) $@ -f $(word 3,$^) -e
 
 ######################################################################################################
 #Stuff for making C files. Making extensive use of Peter Miller's "Recursive Make Considered Harmful".

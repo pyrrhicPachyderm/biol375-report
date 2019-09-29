@@ -1,4 +1,5 @@
 data/processed/*
+figures/*
 
 #C files
 *.o
