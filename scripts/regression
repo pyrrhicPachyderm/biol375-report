@@ -45,8 +45,6 @@ names(predictor_data) <- c("site", "predictor")
 
 data <- inner_join(response_data, predictor_data, by = "site")
 
-data
-
 if(is_plot) {
 	svg(plot_file)
 	plot_object <- ggplot(data) +
