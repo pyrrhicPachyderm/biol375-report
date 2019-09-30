@@ -40,7 +40,6 @@ long long unsigned int tauHausdorffDistance(const int *a, const int *b, size_t l
 
 //Produces a distance matrix from an ordinalised data table.
 DistanceMatrix *tauDistanceMatrix(const DataTableInt *table, size_t numRanks) {
-	//TODO: Slap a generic allocater in tables.c that handles allocation for the correct ssize and observation naming.
 	DistanceMatrix *mat = correspondingDistanceMatrix(table);
 	for(size_t i = 0; i < table->numObs; i++) {
 		for(size_t j = 0; j < table->numObs; j++) {

@@ -87,7 +87,7 @@ if(is_plot) {
 	dev.off()
 }
 
-#TODO: THis appears in the regression script too; DRY!
+#TODO: This appears in the regression script too; DRY!
 p_stringify <- function(p_val) {
 	p_val_string <- sprintf("p = %.3f", p_val)
 	if(p_val_string == "p = 0.000") {

@@ -145,7 +145,7 @@ if(is_tex) {
 			dispersion_parameter <- summary(model)$dispersion
 		}
 		
-		out_string <- sprintf("$z = %.2f$, $%s$, $\\text{dispersion parameter} = %.2f$",
+		out_string <- sprintf("$z\\text{-score} = %.2f$, $%s$, $\\text{dispersion parameter} = %.2f$",
 			z_val, p_stringify(p_val), dispersion_parameter)
 		
 	} else if(regression_method == "binomial" || regression_method == "quasibinomial") {
@@ -162,7 +162,7 @@ if(is_tex) {
 			dispersion_parameter <- summary(model)$dispersion
 		}
 		
-		out_string <- sprintf("$z = %.2f$, $%s$, $\\text{dispersion parameter} = %.2f$",
+		out_string <- sprintf("$z\\text{-score} = %.2f$, $%s$, $\\text{dispersion parameter} = %.2f$",
 			z_val, p_stringify(p_val), dispersion_parameter)
 		
 	} else {
