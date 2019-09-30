@@ -74,9 +74,9 @@ data/processed/pfankuch-total.csv: scripts/summarise data/processed/pfankuch-tid
 	./$< sum $(word 2,$^) $@
 
 figures/richness-regression.pdf: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
-	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8 -v 5
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Taxonomic Richness" -w 8.6 -v 3.2
 figures/abundance-regression.pdf: scripts/regression data/processed/taxa-abundance.csv data/processed/pfankuch-total.csv
-	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8 -v 5
+	./$< quasipoisson $(word 2,$^) $(word 3,$^) -p $@ -x "Pfankuch Stability Score" -y "Total Coded Abundance" -w 8.6 -v 3.2
 
 results/richness-regression.tex: scripts/regression data/processed/taxa-richness.csv data/processed/pfankuch-total.csv
 	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
@@ -84,7 +84,7 @@ results/abundance-regression.tex: scripts/regression data/processed/taxa-abundan
 	./$< quasipoisson $(word 2,$^) $(word 3,$^) -t $@
 
 figures/shell-abundance-regression.pdf: scripts/regression data/processed/taxa-abundance-shelled.csv data/processed/pfankuch-total.csv data/processed/taxa-abundance.csv
-	./$< binomial $(word 2,$^) $(word 3,$^) -b $(word 4,$^) -p $@ -x "Pfankuch Stability Score" -y "Proportion of Shelled Individuals" -w 8 -v 5
+	./$< binomial $(word 2,$^) $(word 3,$^) -b $(word 4,$^) -p $@ -x "Pfankuch Stability Score" -y "Proportion of Shelled Individuals" -w 8.6 -v 3.2
 results/shell-abundance-regression.tex: scripts/regression data/processed/taxa-abundance-shelled.csv data/processed/pfankuch-total.csv data/processed/taxa-abundance.csv
 	./$< binomial $(word 2,$^) $(word 3,$^) -b $(word 4,$^) -t $@
 

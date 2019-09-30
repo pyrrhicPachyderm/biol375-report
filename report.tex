@@ -8,7 +8,7 @@
 
 %Report-specific stuff
 \usepackage{setspace}\doublespacing
-%\usepackage[margin=2.5cm]{geometry}
+\usepackage[margin=2.5cm]{geometry}
 
 %Localisation
 \usepackage{csquotes} %Context sensitive quotes: recommended by babel polyglossia
@@ -174,7 +174,7 @@ The site ordination is shown Figure \ref{fig:site-ordination}.
 There was no difference in community dispersion between the stable and the disturbed streams (\inputresults{permdisp}), but the community compositions differed significantly (\inputresults{permanova}).
 %TODO: Report the correct things for PERMANOVA and PERMDISP.
 
-There was a significant decrease in the proportion of shelled macroinvertebrates with increasing Pfankuch score (\inputresults{taxa-abundance-shelled}; Figure \ref{fig:shell-abundance-regression}).
+There was a significant decrease in the proportion of shelled macroinvertebrates with increasing Pfankuch score (\inputresults{shell-abundance-regression}; Figure \ref{fig:shell-abundance-regression}).
 Although this was not a true proportion, the trend is plain.
 
 \section*{Discussion}
@@ -237,15 +237,19 @@ And thanks to Eva Delmas for directing me to the paper that finally unravelled t
 		\includegraphics[width=\textwidth]{richness-regression}
 		\caption{}\label{fig:richness-regression}
 	\end{subfigure}
+	\begin{subfigure}[t]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{shell-abundance-regression}
+		\caption{}\label{fig:shell-abundance-regression}
+	\end{subfigure}
 	\caption[Regression plots]{ %[] provides a caption for the table of contents, allowing paragraph breaks in the full caption.
-		Scatterplots showing the total coded abundance and taxonomic richness of macroinvertebrates over a stream disturbance gradient around Cass, Cantebury.
+		Scatterplots showing the total coded abundance \subref{fig:abundance-regression}, taxonomic richness \subref{fig:richness-regression} and proportion of shelled or cased individuals \subref{fig:shell-abundance-regression} for macroinvertebrates over a stream disturbance gradient around Cass, Canterbury.
 		A higher Pfankuch score indicates a more disturbed stream.
-		Quasi-Poisson generalised linear regression lines are also shown, with \SI{95}{\percent} confidence intervals.
+		Note that the proportion is not a true proportion, as it is calculated from semi-quantitative data.
+		Generalised linear regression lines with \SI{95}{\percent} confidence intervals are also shown: quasi-Poisson for \subref{fig:abundance-regression} and \subref{fig:richness-regression}, binomial for \subref{fig:shell-abundance-regression}.
 		Data gathered {\datadate}.
 	}\label{fig:regressions}
 \end{figure}
-
-%TODO: Note that Proportion is not a true proportion: coded abundance. Pattern clear nonetheless.
 
 \begin{figure}[p]
 	\centering
