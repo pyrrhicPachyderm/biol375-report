@@ -29,6 +29,8 @@ clean:
 		$(RM) **/*.o **/*.d\
 	)
 	@$(RM) data/processed/*
+	@$(RM) figures/*
+	@$(RM) results/*
 Clean: clean
 	@$(RM) $(maindoc).pdf
 	@$(RM) notes/presence-absence-notes.pdf
