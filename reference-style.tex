@@ -275,6 +275,14 @@
 	\thefield{urlyear}\isdot]%
 }
 
+%Remove brackets around year.
+\xpatchbibmacro{date+extradate}{%
+	\printtext[parens]%
+}{%
+	\setunit*{\addperiod\space}%
+	\printtext%
+}{}{}
+
 %Remove all italics from the bibliography with a nasty hack:
 %There are some options we only want to apply in the bibliograph, so here's a nasty hack.
 \let\printinnerbibliography\printbibliography %Copy the original command so we can modify it
