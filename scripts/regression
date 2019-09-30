@@ -7,7 +7,7 @@
 #Optionally plots the regression line
 #Optionally gives a file with the r^2, F and p values, formatted for TeX.
 
-set.seed(5)
+set.seed(1)
 
 library(tidyverse)
 library(magrittr)
