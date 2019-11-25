@@ -52,4 +52,4 @@ DistanceMatrix *tauDistanceMatrix(const DataTableInt *table, size_t numRanks) {
 
 
 //TODO: There's some optimisation potential here.
-//The NijMatrix is the same size for everything, but we alloc and free if n^2 times.
+//The NijMatrix is the same size for everything, but we alloc and free it n^2 times.
