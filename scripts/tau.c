@@ -11,7 +11,7 @@
 long long unsigned int tauHausdorffDistance(const int *a, const int *b, size_t length, size_t numRanks) {
 	NijMatrix *nij = getNij(a, b, length, numRanks);
 	
-	//The tau Hausdorff distance is the maximum if two different sums.
+	//The tau Hausdorff distance is the maximum of two different sums.
 	long long unsigned int sum1 = 0, sum2 = 0;
 	
 	for(size_t iprime = 0; iprime < numRanks; iprime++) {
